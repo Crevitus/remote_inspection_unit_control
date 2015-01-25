@@ -23,6 +23,12 @@ namespace remote_inspection_unit_control
         public MainWindow()
         {
             InitializeComponent();
+			this.MouseLeftButtonDown += delegate { this.DragMove(); };
+        }
+
+        private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	Application.Current.Shutdown();
         }
     }
 }
