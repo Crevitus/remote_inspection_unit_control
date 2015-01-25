@@ -16,6 +16,3 @@ D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Micros
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\App.baml
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\themes\Light.baml
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\harry2.mp4
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control_Content.g.cs
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\The Shawshank Redemption.avi
