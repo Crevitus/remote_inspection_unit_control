@@ -30,5 +30,27 @@ namespace remote_inspection_unit_control
         {
         	Application.Current.Shutdown();
         }
+		
+		private void btnMinClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+    	  WindowState = WindowState.Minimized;
+        }
+		
+		private void btnMaxClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	if(WindowState == WindowState.Normal)
+			{
+				WindowState = WindowState.Maximized;
+				Maximize.Content = "2";
+				Maximize.ToolTip = "Restore";
+			}
+			else
+			{
+				WindowState = WindowState.Normal;
+				Maximize.Content = "1";
+				Maximize.ToolTip = "Maximize";
+			}
+			
+        }
     }
 }

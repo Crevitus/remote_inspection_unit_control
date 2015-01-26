@@ -1,8 +1,25 @@
-﻿<Window x:Class="remote_inspection_unit_control.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
-        Title="MainWindow" Height="600" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="remote_inspection_unit_control.MainWindow"
+        Title="MainWindow" 
+		x:Name="mainWindow"
+		Height="600" 
+		Width="900"
+		WindowStartupLocation="CenterScreen" 
+		ResizeMode="CanResizeWithGrip"
+		>
+	
+	<Window.Style>
+    <Style TargetType="{x:Type Window}">
+      <Style.Triggers>
+        <Trigger Property="IsActive" Value="False">
+        	<Setter Property="BorderThickness" Value="1,1,1,2" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Style>
 
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0"
@@ -10,19 +27,36 @@
                             ResizeBorderThickness="5" />
     </shell:WindowChrome.WindowChrome>
 
-    <Grid x:Name="layoutRoot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="300" />
-            <RowDefinition Height="300" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="450" />
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-        <MediaElement x:Name="Player" Grid.Column="0" Grid.Row="1" Margin="10,10,10.4,10" />
-        <Canvas Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="280" VerticalAlignment="Top" Width="424" Background="#FF3D78A7" Margin="9.6,10,0,0"/>
-        <Button Content="X" Style="{StaticResource exitButton}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="47.267" Height="40" FontSize="24" Cursor="Hand" Click="btnExitClick" Margin="0,0,-10,0"/>
-        <ListBox HorizontalAlignment="Left" Height="230.4" VerticalAlignment="Top" Width="423.6" Grid.Column="1" Margin="10,0,0,0" Grid.Row="2" Background="#FF5C6D7E"/>
-    </Grid>
+	<Grid x:Name="layoutRoot">
+		<Grid.Style>
+		<Style TargetType="{x:Type Grid}">
+      <Style.Triggers>
+		<DataTrigger Binding="{Binding ElementName=mainWindow,
+                                                   Path=WindowState}" 
+                                 Value="Maximized">
+								  <Setter Property="Margin" Value="8,8,8,8" />
+                    </DataTrigger>
+      </Style.Triggers>
+    </Style>
+	</Grid.Style>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="300" />
+			<RowDefinition Height="300" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="450" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<MediaElement x:Name="Player" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" Margin="10,10,0,10" Width="430" />
+		<Canvas Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Height="280" VerticalAlignment="Top" Width="424" Background="#FF3D78A7" Margin="0,10,9.6,0"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Height="30">
+			<Button x:Name="Minimize" Click="btnMinClick" ToolTip="Minimize" Style="{StaticResource basicButton}" Content="0" FontFamily="Marlett" IsCancel="True" Width="26" />
+			<Button x:Name="Maximize" Click="btnMaxClick" ToolTip="Maximize" Style="{StaticResource basicButton}" FontFamily="Marlett" Content="1" Width="26"/>
+			<Button x:Name="Close" Click="btnExitClick" ToolTip="Close"  Style="{StaticResource exitButton}" FontFamily="Marlett" Content="r" Width="26"/>
+		</StackPanel>
+		<ListBox HorizontalAlignment="Right" Height="245.4" VerticalAlignment="Top" Width="423.6" Grid.Column="1" Margin="0,0,10,0" Grid.Row="2" Background="#FF5C6D7E"/>
+		<Label Content="Dat Title" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="30" Width="300" FontSize="18.667" FontWeight="Bold"/>
+		<Canvas Grid.Row="1" HorizontalAlignment="Right" Height="280" VerticalAlignment="Top" Width="424" Background="#FF3D78A7" Margin="0,10,16,0"/>
+	</Grid>
 </Window>
