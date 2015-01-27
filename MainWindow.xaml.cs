@@ -24,6 +24,7 @@ namespace remote_inspection_unit_control
         {
             InitializeComponent();
 			this.MouseLeftButtonDown += delegate { this.DragMove(); };
+			this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
 
         private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
