@@ -76,4 +76,58 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="theButton"
+           TargetType="{x:Type Button}">
+        
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="BorderThickness"
+                Value="2" />
+        <Setter Property="Cursor"
+				Value="Hand"/>
+        <Setter Property="FontFamily"
+                Value="Microsoft JhengHei UI Light" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="#FFD67D5C" />                
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="controlImage"
+           TargetType="{x:Type Image}">
+
+        <Setter Property="Cursor"
+				Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="BitmapEffect">
+                    <Setter.Value>
+                        <DropShadowBitmapEffect Color="DarkGray" Direction="180" ShadowDepth="12" Softness="0.8" Opacity="0.5" />
+                    </Setter.Value>
+                </Setter>
+                        
+            </Trigger>
+
+        </Style.Triggers>
+    </Style>
+
+	<Style BasedOn="{StaticResource basicButton}" x:Key="controlButton" TargetType="{x:Type Button}">
+		<Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="transparent" />                
+            </Trigger>
+        </Style.Triggers>
+	</Style>
+
 </ResourceDictionary>
