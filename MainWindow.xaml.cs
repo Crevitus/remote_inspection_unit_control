@@ -61,5 +61,11 @@ namespace remote_inspection_unit_control
             (sender as Button).ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             (sender as Button).ContextMenu.IsOpen = true;
         } 
+		
+		private void searchBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bluetooth_search bs = new bluetooth_search();
+			bs.Show();
+		}
     }
 }

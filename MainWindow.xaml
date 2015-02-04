@@ -9,17 +9,9 @@
 		Width="900"
 		WindowStartupLocation="CenterScreen" 
 		ResizeMode="NoResize"
+		Style="{StaticResource basicWindow}"
 		>
-	
-	<Window.Style>
-    <Style TargetType="{x:Type Window}">
-      <Style.Triggers>
-        <Trigger Property="IsActive" Value="False">
-        	<Setter Property="BorderThickness" Value="1,1,1,2" />
-        </Trigger>
-      </Style.Triggers>
-    </Style>
-  </Window.Style>
+
 
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0"
@@ -106,7 +98,7 @@
 				<Button.ContextMenu>
 					<ContextMenu >
 						<MenuItem Header="Enable/Disable Bluetooth"/>
-						<MenuItem Header="Search..."/>
+						<MenuItem Header="Search..." x:Name="searchBtn" Click="searchBtn_Click"/>
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>

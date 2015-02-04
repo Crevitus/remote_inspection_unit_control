@@ -62,3 +62,5 @@ C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\ru\
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
+C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.baml
+C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.g.cs
