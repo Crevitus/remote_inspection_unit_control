@@ -16,7 +16,7 @@
 	<Style x:Key="basicButton"
            TargetType="{x:Type Button}">
         <Setter Property="Background"
-                Value="White" />
+                Value="#00000000" />
         <Setter Property="Foreground"
                 Value="#FF5C5858" />
         <Setter Property="FontSize"

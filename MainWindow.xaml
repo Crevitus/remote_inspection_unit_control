@@ -9,7 +9,7 @@
 		Width="900"
 		WindowStartupLocation="CenterScreen" 
 		ResizeMode="NoResize"
-		Style="{StaticResource basicWindow}"
+		Style="{StaticResource basicWindow}" Background="#FFEAEAEA"
 		>
 
 
@@ -56,10 +56,10 @@
 		
 		<!-- controls -->
 
-			<Button x:Name="upButton" HorizontalAlignment="Left" Margin="97,50,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}">
+			<Button x:Name="upButton" HorizontalAlignment="Left" Margin="97,50,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
 			<StackPanel>
 				<Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}"/></StackPanel></Button>
-			<Button x:Name="downButton" HorizontalAlignment="Left" Margin="97,147,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" >
+			<Button x:Name="downButton" HorizontalAlignment="Left" Margin="97,147,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
 			<StackPanel>
 				<Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
 					<Image.RenderTransform><TransformGroup>
@@ -67,11 +67,11 @@
 							<TranslateTransform Y="5"/>
 						</TransformGroup></Image.RenderTransform>
 				</Image></StackPanel></Button>
-			<Button x:Name="leftButton" HorizontalAlignment="Left" Margin="33,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" >
+			<Button x:Name="leftButton" HorizontalAlignment="Left" Margin="44.144,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
 			<StackPanel>
 				<Image Source="icon/leftarrow.png" Style="{DynamicResource controlImage}" >	
 				</Image></StackPanel></Button>
-			<Button x:Name="rightButton" HorizontalAlignment="Left" Margin="162,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}">
+			<Button x:Name="rightButton" HorizontalAlignment="Left" Margin="149.463,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
 			<StackPanel>
 				<Image Source="icon/rightarrow.png" Style="{DynamicResource controlImage}" >
 				</Image></StackPanel></Button>
@@ -91,7 +91,7 @@
 			
 			<Button Name="device_Btn"
 					Click="devices_Click"
-					ContextMenuService.IsEnabled="False" Height="22" Width="90" Margin="0,0,10,0" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light">
+					ContextMenuService.IsEnabled="False" Height="22" Width="90" Margin="0,0,10,0" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light" Background="#00531717">
 				<StackPanel>
 				<TextBlock>devices<Image Source="icon/bdown.png" Style="{DynamicResource controlImage}" Height="22" /></TextBlock>
 				</StackPanel>
@@ -102,7 +102,7 @@
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
-			<Button Name="settings_Btn" Height="20" Style="{DynamicResource controlButton}" ToolTip="Settings">
+			<Button Name="settings_Btn" Height="20" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00531717">
 				<Image Source="icon/settings.png" Style="{DynamicResource controlImage}" />
 			</Button>
 		</DockPanel>
