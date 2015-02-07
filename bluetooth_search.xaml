@@ -22,9 +22,9 @@
 		</StackPanel>
 
 		<Button x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="342,39.04,0,0" VerticalAlignment="Top" Width="127" Height="26.96"/>
-		<ScrollViewer x:Name="deviceView" HorizontalAlignment="Left" Height="172" Margin="21,89,0,0" VerticalAlignment="Top" Width="448"/>
+		<ListView x:Name="deviceView" HorizontalAlignment="Left" Height="172" Margin="21,89,0,0" VerticalAlignment="Top" Width="448"/>
 		<Label Content="Select a device&#xD;&#xA;" HorizontalAlignment="Left" Margin="31,39.04,0,0" VerticalAlignment="Top" Height="26.96" Width="270.94"/>
-		<Button x:Name="nextBtn" Content="Next" HorizontalAlignment="Left" Margin="342,292,0,0" VerticalAlignment="Top" Width="123" Height="30.96"/>
+		<Button x:Name="nextBtn" Content="Next" HorizontalAlignment="Left" Margin="342,292,0,0" VerticalAlignment="Top" Width="123" Height="30.96" Click="nextBtn_Click"/>
 		
 	</Grid>
 </Window>

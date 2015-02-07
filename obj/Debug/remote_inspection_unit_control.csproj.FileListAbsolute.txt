@@ -1,19 +1,4 @@
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe.config
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe.config
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.pdb
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.baml
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.g.cs
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\App.g.cs
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control_MarkupCompile.cache
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.g.resources
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.Properties.Resources.resources
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csproj.GenerateResource.Cache
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.exe
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.pdb
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\App.baml
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\themes\Light.baml
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe.config
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.pdb
@@ -64,3 +49,60 @@ C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\bin\Debug\zh-
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.baml
 C:\Users\witchfire\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.g.cs
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe.config
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.pdb
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Expression.Effects.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Windows.Shell.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\System.Windows.Interactivity.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\de\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\es\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\fr\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\it\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ja\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ko\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ru\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\Microsoft.Expression.Effects.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\de\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\en\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\es\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\fr\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\it\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ja\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ko\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ru\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\Microsoft.Expression.Interactions.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\SplashScreen.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\themes\Light.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\App.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.g.cs
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.g.cs
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\SplashScreen.g.cs
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\App.g.cs
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control_MarkupCompile.cache
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.g.resources
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.Properties.Resources.resources
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csproj.GenerateResource.Cache
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.exe
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.pdb
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\InTheHand.Net.Personal.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\InTheHand.Net.Personal.xml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\de\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\en\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\es\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\it\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
