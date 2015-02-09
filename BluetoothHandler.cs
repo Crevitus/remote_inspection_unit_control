@@ -18,12 +18,26 @@ namespace remote_inspection_unit_control
         private static Dictionary<String, BluetoothAddress> deviceInfo = new Dictionary<string, BluetoothAddress> { };
         private static readonly String DEFAULT_PIN = "1234";
 
-        public static List<String> discover()
+
+        public static bool isSupported()
+        {
+            if(!BluetoothRadio.IsSupported)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static async Task<List<String>> discoverAsync()
         {
             BluetoothClient bc = new BluetoothClient();
             List<String> items = new List<string> { };
- 
-                BluetoothDeviceInfo[] devices = bc.DiscoverDevicesInRange();
+
+
+            BluetoothDeviceInfo[] devices = await Task.Run(() => bc.DiscoverDevicesInRange());
                 foreach (BluetoothDeviceInfo device in devices)
                 {
                     items.Add(device.DeviceName);

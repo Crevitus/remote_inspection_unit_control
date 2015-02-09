@@ -22,30 +22,47 @@ namespace remote_inspection_unit_control
 		{
 			this.InitializeComponent();
 			this.MouseLeftButtonDown += delegate { this.DragMove(); };
+            getDevices();
+		}
+
+        private async void getDevices()
+        {
             try
             {
-                List<String> devices = BluetoothHandler.discover();
+                List<String> devices = await BluetoothHandler.discoverAsync();
+                
                 foreach (object device in devices)
                 {
-                    deviceView.Items.Add(device);
+                    lstDeviceView.Items.Add(device);
+                }
+                if (devices.Count > 0)
+                {
+                    btnNext.IsEnabled = true;
+                    lstDeviceView.Focus();
+                    lstDeviceView.SelectedIndex = 0;
                 }
             }
-            catch(System.PlatformNotSupportedException)
+            catch (System.PlatformNotSupportedException)
             {
                 MessageBox.Show("Please make sure that your hardware is supported and bluetooth is switched on",
                 "Bluetooth Search Failed.");
             }
-		}
+        }
 		
 		 private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
         {
+
         	Window.Close();
         }
 
-         private void nextBtn_Click(object sender, RoutedEventArgs e)
+         private void btnNext_Click(object sender, RoutedEventArgs e)
          {
-             BluetoothHandler.pair(deviceView.SelectedValue.ToString());
+             BluetoothHandler.pair(lstDeviceView.SelectedValue.ToString());
          }
 
+         private void btnSearch_Click(object sender, RoutedEventArgs e)
+         {
+             getDevices();
+         }
 	}
 }

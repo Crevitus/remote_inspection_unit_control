@@ -42,14 +42,14 @@ namespace remote_inspection_unit_control
         	if(WindowState == WindowState.Normal)
 			{
 				WindowState = WindowState.Maximized;
-				Maximize.Content = "2";
-				Maximize.ToolTip = "Restore";
+				btnMaximize.Content = "2";
+				btnMaximize.ToolTip = "Restore";
 			}
 			else
 			{
 				WindowState = WindowState.Normal;
-				Maximize.Content = "1";
-				Maximize.ToolTip = "Maximize";
+				btnMaximize.Content = "1";
+				btnMaximize.ToolTip = "Maximize";
 			}
 			
         }
@@ -60,12 +60,15 @@ namespace remote_inspection_unit_control
             (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
             (sender as Button).ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             (sender as Button).ContextMenu.IsOpen = true;
-        } 
-		
-		private void searchBtn_Click(object sender, RoutedEventArgs e)
-		{
-			bluetooth_search bs = new bluetooth_search();
-			bs.Show();
-		}
+        }
+
+        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bluetooth_search bs = new bluetooth_search();
+            if (BluetoothHandler.isSupported())
+            {
+                bs.Show();
+            }
+        }
     }
 }
