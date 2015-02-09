@@ -54,7 +54,7 @@ namespace remote_inspection_unit_control
 			
         }
 
-        private void devices_Click(object sender, RoutedEventArgs e)
+        private void btnDevices_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsEnabled = true;
             (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
@@ -62,7 +62,7 @@ namespace remote_inspection_unit_control
             (sender as Button).ContextMenu.IsOpen = true;
         }
 
-        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             bluetooth_search bs = new bluetooth_search();
             if (BluetoothHandler.isSupported())

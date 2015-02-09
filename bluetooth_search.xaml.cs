@@ -44,8 +44,8 @@ namespace remote_inspection_unit_control
             }
             catch (System.PlatformNotSupportedException)
             {
-                MessageBox.Show("Please make sure that your hardware is supported and bluetooth is switched on",
-                "Bluetooth Search Failed.");
+                MessageBox.Show("Please make sure that your hardware is supported and bluetooth is switched on.",
+                "Bluetooth Search Failed");
             }
         }
 		

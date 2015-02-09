@@ -90,14 +90,14 @@
 		<DockPanel Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Right" Height="31.28"  Grid.Row="1" VerticalAlignment="Top" Margin="0,7.72,10,0" Width="157">
 			
 			<Button Name="btnDevices"
-					Click="devices_Click"
+					Click="btnDevices_Click"
 					ContextMenuService.IsEnabled="False" Height="22" Width="90" Margin="0,0,10,0" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light" Background="#00531717">
 				<StackPanel>
                     <TextBlock>Devices<Image Source="icon/bdown.png" Style="{DynamicResource controlImage}" Height="22" /></TextBlock>
 				</StackPanel>
 				<Button.ContextMenu>
                     <ContextMenu >
-                        <MenuItem Header="Search..." x:Name="searchBtn" Click="searchBtn_Click"/>
+                        <MenuItem Header="Search..." x:Name="searchBtn" Click="btnSearch_Click"/>
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
