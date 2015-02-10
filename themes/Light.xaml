@@ -122,7 +122,7 @@
                      Value="True">
                 <Setter Property="BitmapEffect">
                     <Setter.Value>
-                        <DropShadowBitmapEffect Color="DarkGray" Direction="180" ShadowDepth="12" Softness="0.8" Opacity="0.5" />
+                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.5" Opacity="1" />
                     </Setter.Value>
                 </Setter>
                         
