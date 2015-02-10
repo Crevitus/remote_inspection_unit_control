@@ -39,18 +39,18 @@
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="450" />
-			<ColumnDefinition Width="340*" />
-			<ColumnDefinition Width="103*"/>
-		</Grid.ColumnDefinitions>
-		<MediaElement x:Name="mdePlayer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" Margin="10,48.46,0,10" Width="430" Source="harry2.mp4" />
-		<Canvas Grid.Row="1" HorizontalAlignment="Right" Height="241.54" VerticalAlignment="Top" Width="432" Background="#FF3D78A7" Margin="0,48.46,10,0" Grid.ColumnSpan="2" Grid.Column="1" UseLayoutRounding="False"/>
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2" Height="30" Width="78">
+            <ColumnDefinition Width="450" />
+        </Grid.ColumnDefinitions>
+		<MediaElement x:Name="mdePlayer" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,8,0" Width="432" Source="harry2.mp4" Height="240"/>
+		<Canvas x:Name="cnvsMap" Grid.Row="1" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="432" Background="#FF3D78A7" Margin="8,50,0,0" Grid.Column="1" UseLayoutRounding="False"/>
+        <Canvas x:Name="cnvsDeleteMe" Grid.Row="1" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="432" Background="#FF3D78A7" Margin="8,50,0,0" UseLayoutRounding="False"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2" Height="30" Width="78">
 			<Button x:Name="btnMinimize" Click="btnMinClick" ToolTip="Minimize" Style="{StaticResource basicButton}" Content="0" FontFamily="Marlett" IsCancel="True" Width="26" />
 			<Button x:Name="btnMaximize" Click="btnMaxClick" ToolTip="Maximize" Style="{StaticResource basicButton}" FontFamily="Marlett" Content="1" Width="26"/>
 			<Button x:Name="btnClose" Click="btnExitClick" ToolTip="Close"  Style="{StaticResource exitButton}" FontFamily="Marlett" Content="r" Width="26"/>
 		</StackPanel>
-		<ListBox x:Name="lstLogList" HorizontalAlignment="Right" Height="225.4" VerticalAlignment="Top" Width="432" Margin="0,20,10,0" Grid.Row="2" Background="#FF5C6D7E" Grid.ColumnSpan="2" Grid.Column="1" Grid.RowSpan="2"/>
-		<Label Content="Remote Inspection Unit" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="30" Width="300" FontSize="16" FontWeight="Bold" Margin="296,0,193.5,0" FontFamily="Microsoft JhengHei UI Light"/>
+		<ListBox x:Name="lstLogList" HorizontalAlignment="Right" Height="225.4" VerticalAlignment="Top" Width="434" Margin="0,20,10,0" Grid.Row="2" Background="#FF5C6D7E" Grid.ColumnSpan="2" Grid.Column="1" Grid.RowSpan="2"/>
+		<Label Content="Remote Inspection Unit" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="30" Width="300" FontSize="16" FontWeight="Bold" Margin="0,0,0,0" FontFamily="Microsoft JhengHei UI Light"/>
 		
 		<Grid HorizontalAlignment="Left" Height="229" Margin="15,268,0,0" Grid.Row="1" VerticalAlignment="Top" Width="430" Grid.RowSpan="3">
 		
@@ -77,23 +77,23 @@
 				</Image></StackPanel></Button>
 
 			<!-- other buttons -->
-			<Button Content="Capture" Style="{StaticResource theButton}" HorizontalAlignment="Left" Margin="297.5,71.08,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.24,0.601"/>
-            <Button Content="Manual" Style="{StaticResource theButton}" HorizontalAlignment="Left" Margin="297.5,108.13,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button Content="Recall" Style="{StaticResource theButton}" HorizontalAlignment="Left" Margin="297.561,141.373,0,0" VerticalAlignment="Top" Width="74.939" RenderTransformOrigin="0.5,0.5" Height="20.627"></Button>
+            <Button Content="Capture" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.24,0.601" Height="22"/>
+            <Button Content="Manual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,102,20,0" VerticalAlignment="Top" Width="75" Height="22"/>
+            <Button Content="Recall" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,134,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22"></Button>
 		</Grid>
-		<Label Content="Camera View" HorizontalAlignment="Left" Margin="147.5,10,0,0" Grid.Row="1" VerticalAlignment="Top" FontFamily="Microsoft JhengHei Light" FontSize="16" Height="31.28" Width="105.773"/>
-		<Label Content="Map View" HorizontalAlignment="Left" Margin="166.74,10.96,0,0" Grid.Row="1" VerticalAlignment="Top" Height="32.5" Width="83.533" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Grid.Column="1"/>
-		<Label Content="System Log" Grid.Column="1" HorizontalAlignment="Left" Margin="166.74,291.68,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2"/>
+        <Label Content="Camera View" HorizontalAlignment="Center" Margin="0,11,0,0" Grid.Row="1" VerticalAlignment="Top" FontFamily="Microsoft JhengHei Light" FontSize="16" Height="32.5" Width="105.773" Foreground="Black"/>
+		<Label Content="Map View" HorizontalAlignment="Center" Margin="0,11,0,0" Grid.Row="1" VerticalAlignment="Top" Height="32.5" Width="83.533" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Grid.Column="1" Foreground="Black"/>
+        <Label Content="System Log" Grid.Column="1" HorizontalAlignment="Center" Margin="0,-8,0,0" Grid.Row="2" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2" Foreground="Black"/>
 		
 			<!-- devices and settings -->
 
-		<DockPanel Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Right" Height="31.28"  Grid.Row="1" VerticalAlignment="Top" Margin="0,7.72,10,0" Width="157">
+		<DockPanel Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Right" Height="43.5"  Grid.Row="1" VerticalAlignment="Top" Margin="0,0,10,0" Width="157">
 			
 			<Button Name="btnDevices"
 					Click="btnDevices_Click"
-					ContextMenuService.IsEnabled="False" Height="22" Width="90" Margin="0,0,10,0" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light" Background="#00531717">
+					ContextMenuService.IsEnabled="False" Height="32.5" Width="90" Margin="0,11,10,0" VerticalAlignment="Top" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Background="#00000000" Foreground="Black">
 				<StackPanel>
-                    <TextBlock>Devices<Image Source="icon/bdown.png" Style="{DynamicResource controlImage}" Height="22" /></TextBlock>
+                    <TextBlock Height="32.5">Devices<Image Source="icon/bdown.png" Style="{DynamicResource controlImage}" Height="32.5" VerticalAlignment="Top" /></TextBlock>
 				</StackPanel>
 				<Button.ContextMenu>
                     <ContextMenu >
@@ -101,9 +101,9 @@
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
-			<Button Name="btnSettings" Height="20" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00531717">
+			<Button Name="btnSettings" Height="20" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
 				<Image Source="icon/settings.png" Style="{DynamicResource controlImage}" />
 			</Button>
 		</DockPanel>
-	</Grid>
+    </Grid>
 </Window>
