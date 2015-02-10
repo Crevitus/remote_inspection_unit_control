@@ -16,12 +16,12 @@ namespace remote_inspection_unit_control
     static class BluetoothHandler
     {
         private static Dictionary<String, BluetoothAddress> deviceInfo = new Dictionary<string, BluetoothAddress> { };
-        private static readonly String DEFAULT_PIN = "1234";
+        private const String DEFAULT_PIN = "1234";
 
 
         public static bool isSupported()
         {
-            if(!BluetoothRadio.IsSupported)
+            if (!BluetoothRadio.IsSupported)
             {
                 return false;
             }
@@ -38,51 +38,28 @@ namespace remote_inspection_unit_control
 
 
             BluetoothDeviceInfo[] devices = await Task.Run(() => bc.DiscoverDevicesInRange());
-                foreach (BluetoothDeviceInfo device in devices)
-                {
-                    items.Add(device.DeviceName);
-                    deviceInfo.Add(device.DeviceName, device.DeviceAddress);
-                }
+            foreach (BluetoothDeviceInfo device in devices)
+            {
+                items.Add(device.DeviceName);
+                deviceInfo.Add(device.DeviceName, device.DeviceAddress);
+            }
             return items;
         }
 
-        public static bool pair(String name)
+        public static async Task<bool> pairAsync(String name, String pin = DEFAULT_PIN)
         {
             bool isPaired;
-            isPaired = BluetoothSecurity.PairRequest(deviceInfo[name], DEFAULT_PIN);
-            
-            if(isPaired)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }  
+            isPaired = await Task.Run(() => BluetoothSecurity.PairRequest(deviceInfo[name], pin));
+            return isPaired;
         }
 
-        public static bool pair(String name, String pin)
+        public static void send(String command)
         {
-            bool isPaired;
-            isPaired = BluetoothSecurity.PairRequest(deviceInfo[name], pin);
-            
-            if(isPaired)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }  
         }
-       
-       public static void send(String command)
-       {
-       }
 
         private static void receive()
-       {
-       }
+        {
+        }
 
     }
 }
