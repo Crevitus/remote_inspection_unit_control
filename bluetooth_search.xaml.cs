@@ -31,12 +31,12 @@ namespace remote_inspection_unit_control
             {
                 List<String> devices = await BluetoothHandler.discoverAsync();
                 
-                foreach (object device in devices)
-                {
-                    lstDeviceView.Items.Add(device);
-                }
                 if (devices.Count > 0)
                 {
+                    foreach (object device in devices)
+                    {
+                        lstDeviceView.Items.Add(device);
+                    }
                     btnNext.IsEnabled = true;
                     lstDeviceView.Focus();
                     lstDeviceView.SelectedIndex = 0;
@@ -55,9 +55,9 @@ namespace remote_inspection_unit_control
         	Window.Close();
         }
 
-         private void btnNext_Click(object sender, RoutedEventArgs e)
+         private async void btnNext_Click(object sender, RoutedEventArgs e)
          {
-             BluetoothHandler.pair(lstDeviceView.SelectedValue.ToString());
+            await BluetoothHandler.pairAsync(lstDeviceView.SelectedValue.ToString());
          }
 
          private void btnSearch_Click(object sender, RoutedEventArgs e)
