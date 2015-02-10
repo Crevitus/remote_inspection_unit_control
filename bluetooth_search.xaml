@@ -24,7 +24,7 @@
 		<Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="342,39.04,0,0" VerticalAlignment="Top" Width="127" Height="26.96" Click="btnSearch_Click"/>
 		<ListView x:Name="lstDeviceView" HorizontalAlignment="Left" Height="172" Margin="21,89,0,0" VerticalAlignment="Top" Width="448"/>
 		<Label Content="Select a device&#xD;&#xA;" HorizontalAlignment="Left" Margin="31,39.04,0,0" VerticalAlignment="Top" Height="26.96" Width="270.94"/>
-		<Button x:Name="btnNext" Content="Next" HorizontalAlignment="Left" Margin="342,292,0,0" VerticalAlignment="Top" Width="123" Height="30.96" Click="btnNext_Click" IsEnabled="False"/>
-		
-	</Grid>
+        <Button x:Name="btnSelect" Content="Select" HorizontalAlignment="Left" Margin="342,292,0,0" VerticalAlignment="Top" Width="123" Height="30.96" Click="btnSelect_Click" IsEnabled="False"/>
+
+    </Grid>
 </Window>

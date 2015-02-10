@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using InTheHand.Net.Sockets;
+
 
 namespace remote_inspection_unit_control
 {
@@ -29,15 +31,15 @@ namespace remote_inspection_unit_control
         {
             try
             {
-                List<String> devices = await BluetoothHandler.discoverAsync();
+                BluetoothDeviceInfo[] devices = await BluetoothHandler.discoverAsync();
                 
-                if (devices.Count > 0)
+                if (devices.Length > 0)
                 {
-                    foreach (object device in devices)
+                    foreach (BluetoothDeviceInfo device in devices)
                     {
-                        lstDeviceView.Items.Add(device);
+                        lstDeviceView.Items.Add(device.DeviceName);
                     }
-                    btnNext.IsEnabled = true;
+                    btnSelect.IsEnabled = true;
                     lstDeviceView.Focus();
                     lstDeviceView.SelectedIndex = 0;
                 }
@@ -55,9 +57,15 @@ namespace remote_inspection_unit_control
         	Window.Close();
         }
 
-         private async void btnNext_Click(object sender, RoutedEventArgs e)
+         private async void btnSelect_Click(object sender, RoutedEventArgs e)
          {
-            await BluetoothHandler.pairAsync(lstDeviceView.SelectedValue.ToString());
+           bool isPaired = await BluetoothHandler.pairAsync(lstDeviceView.SelectedIndex);
+           if(isPaired)
+            {
+                MessageBox.Show(lstDeviceView.SelectedValue + " has been successfully connected.",
+                 "Success!");
+                Window.Close();
+            }
          }
 
          private void btnSearch_Click(object sender, RoutedEventArgs e)

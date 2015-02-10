@@ -15,8 +15,9 @@ namespace remote_inspection_unit_control
 {
     static class BluetoothHandler
     {
-        private static Dictionary<String, BluetoothAddress> deviceInfo = new Dictionary<string, BluetoothAddress> { };
+        private static BluetoothDeviceInfo[] _devices;
         private const String DEFAULT_PIN = "1234";
+        private static String _selectedDevice;
 
 
         public static bool isSupported()
@@ -31,26 +32,31 @@ namespace remote_inspection_unit_control
             }
         }
 
-        public static async Task<List<String>> discoverAsync()
+        public static async Task<BluetoothDeviceInfo[]> discoverAsync()
         {
             BluetoothClient bc = new BluetoothClient();
             List<String> items = new List<string> { };
 
 
-            BluetoothDeviceInfo[] devices = await Task.Run(() => bc.DiscoverDevicesInRange());
-            foreach (BluetoothDeviceInfo device in devices)
-            {
-                items.Add(device.DeviceName);
-                deviceInfo.Add(device.DeviceName, device.DeviceAddress);
-            }
-            return items;
+            _devices = await Task.Run(() => bc.DiscoverDevicesInRange());
+            return _devices;
         }
 
-        public static async Task<bool> pairAsync(String name, String pin = DEFAULT_PIN)
+        public static async Task<bool> pairAsync(int pos, String pin = DEFAULT_PIN)
         {
-            bool isPaired;
-            isPaired = await Task.Run(() => BluetoothSecurity.PairRequest(deviceInfo[name], pin));
-            return isPaired;
+            bool pairStatus;
+            if (!_devices[pos].Authenticated)
+            {
+                pairStatus = await Task.Run(() => BluetoothSecurity.PairRequest(_devices[pos].DeviceAddress, pin));
+                return pairStatus;
+            }
+            else
+            {
+                _selectedDevice = _devices[pos].DeviceAddress.ToString();
+                pairStatus = true;
+                return pairStatus;
+            }
+
         }
 
         public static void send(String command)
