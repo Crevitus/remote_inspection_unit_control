@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using InTheHand.Net.Sockets;
+using InTheHand.Net.Bluetooth;
+using System.Threading.Tasks;
 
 
 namespace remote_inspection_unit_control
@@ -19,7 +21,6 @@ namespace remote_inspection_unit_control
 	/// </summary>
 	public partial class bluetooth_search : Window
 	{
-        
 		public bluetooth_search()
 		{
 			this.InitializeComponent();
@@ -31,13 +32,14 @@ namespace remote_inspection_unit_control
         {
             try
             {
-                BluetoothDeviceInfo[] devices = await BluetoothHandler.discoverAsync();
+                List<string> items = new List<string> { };
+                List<string> _devicesInfo = await BluetoothHandler.discoverAsync();
                 
-                if (devices.Length > 0)
+                if (_devicesInfo.Count> 0)
                 {
-                    foreach (BluetoothDeviceInfo device in devices)
+                    foreach (string device in _devicesInfo)
                     {
-                        lstDeviceView.Items.Add(device.DeviceName);
+                        lstDeviceView.Items.Add(device);
                     }
                     btnSelect.IsEnabled = true;
                     lstDeviceView.Focus();
@@ -46,31 +48,33 @@ namespace remote_inspection_unit_control
             }
             catch (System.PlatformNotSupportedException)
             {
-                MessageBox.Show("Please make sure that your hardware is supported and bluetooth is switched on.",
+                MessageBox.Show(Application.Current.MainWindow, "Please make sure that your hardware is supported and bluetooth is switched on.",
                 "Bluetooth Search Failed");
             }
-        }
-		
-		 private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        	Window.Close();
         }
 
          private async void btnSelect_Click(object sender, RoutedEventArgs e)
          {
-           bool isPaired = await BluetoothHandler.pairAsync(lstDeviceView.SelectedIndex);
-           if(isPaired)
-            {
-                MessageBox.Show(lstDeviceView.SelectedValue + " has been successfully connected.",
-                 "Success!");
-                Window.Close();
-            }
+             if(await BluetoothHandler.pairAsync(lstDeviceView.SelectedValue.ToString()))
+             {
+                 MessageBox.Show(Application.Current.MainWindow, "Device has been successfully connected!",
+                "Device Connected!");
+             }
+             else
+             {
+                 MessageBox.Show(Application.Current.MainWindow, "Pairing error, please try again.",
+                                 "Pairing Error!");
+             }
          }
 
          private void btnSearch_Click(object sender, RoutedEventArgs e)
          {
              getDevices();
+         }
+
+         private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
+         {
+             Window.Close();
          }
 	}
 }

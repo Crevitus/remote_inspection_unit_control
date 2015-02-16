@@ -67,6 +67,7 @@ namespace remote_inspection_unit_control
             bluetooth_search bs = new bluetooth_search();
             if (BluetoothHandler.isSupported())
             {
+                bs.Owner = this;
                 bs.Show();
             }
         }

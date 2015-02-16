@@ -8,7 +8,8 @@
 	Width="500" Height="400"
 	WindowStartupLocation="CenterScreen" 
 	ResizeMode="NoResize"
-	Style="{StaticResource basicWindow}">
+	Style="{StaticResource basicWindow}" ShowInTaskbar="False"
+    >
 
 	
     <shell:WindowChrome.WindowChrome>

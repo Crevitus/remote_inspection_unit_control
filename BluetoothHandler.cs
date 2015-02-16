@@ -8,55 +8,40 @@ using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Ports;
 using InTheHand.Net.Sockets;
 using InTheHand.Net;
-
+using System.Windows;
 
 
 namespace remote_inspection_unit_control
 {
     static class BluetoothHandler
     {
-        private static BluetoothDeviceInfo[] _devices;
-        private const String DEFAULT_PIN = "1234";
-        private static String _selectedDevice;
-
+        private static Dictionary<string, BluetoothDeviceInfo> _deviceInfo;
+        private static readonly String DEFAULT_PIN = "1234";
 
         public static bool isSupported()
         {
-            if (!BluetoothRadio.IsSupported)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return BluetoothRadio.IsSupported;
         }
 
-        public static async Task<BluetoothDeviceInfo[]> discoverAsync()
+        public static async Task<List<String>> discoverAsync()
         {
-            BluetoothClient bc = new BluetoothClient();
             List<String> items = new List<string> { };
-
-
-            _devices = await Task.Run(() => bc.DiscoverDevicesInRange());
-            return _devices;
+            BluetoothClient bc = new BluetoothClient();
+            BluetoothDeviceInfo[] devices = await Task.Run(() => bc.DiscoverDevicesInRange());
+            _deviceInfo = new Dictionary<string, BluetoothDeviceInfo> { };
+            foreach (BluetoothDeviceInfo device in devices)
+            {
+                items.Add(device.DeviceName);
+                _deviceInfo.Add(device.DeviceName, device);
+            }
+            return items;
         }
 
-        public static async Task<bool> pairAsync(int pos, String pin = DEFAULT_PIN)
+        public static async Task<bool> pairAsync(String name)
         {
-            bool pairStatus;
-            if (!_devices[pos].Authenticated)
-            {
-                pairStatus = await Task.Run(() => BluetoothSecurity.PairRequest(_devices[pos].DeviceAddress, pin));
-                return pairStatus;
-            }
-            else
-            {
-                _selectedDevice = _devices[pos].DeviceAddress.ToString();
-                pairStatus = true;
-                return pairStatus;
-            }
-
+            bool isPaired = false;
+            isPaired = await Task.Run(() => BluetoothSecurity.PairRequest(_deviceInfo[name].DeviceAddress, DEFAULT_PIN));
+            return isPaired;
         }
 
         public static void send(String command)
@@ -66,6 +51,5 @@ namespace remote_inspection_unit_control
         private static void receive()
         {
         }
-
     }
 }
