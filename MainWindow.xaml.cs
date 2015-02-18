@@ -20,16 +20,44 @@ namespace remote_inspection_unit_control
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool fullScreen = false;
         public MainWindow()
         {
             InitializeComponent();
 			this.MouseLeftButtonDown += delegate { this.DragMove(); };
 			this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            getDevices();
+        }
+
+        private async void getDevices()
+        {
+            try
+            {
+                List<string> items = new List<string> { };
+                List<string> _devicesInfo = await BluetoothHandler.discoverAsync();
+
+                if (_devicesInfo.Count > 0)
+                {
+                    foreach (string device in _devicesInfo)
+                    {
+                        cbxDeviceList.Items.Add(device);
+                    }
+                }
+            }
+            catch (System.PlatformNotSupportedException)
+            {
+                MessageBox.Show(Application.Current.MainWindow, "Please make sure that your hardware is supported and bluetooth is switched on.",
+                "Bluetooth Search Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
         {
-        	Application.Current.Shutdown();
+            if (MessageBox.Show("Drone is still connected, are you sure you want to exit?", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Question)
+                == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 		
 		private void btnMinClick(object sender, System.Windows.RoutedEventArgs e)
@@ -62,14 +90,56 @@ namespace remote_inspection_unit_control
             (sender as Button).ContextMenu.IsOpen = true;
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            bluetooth_search bs = new bluetooth_search();
-            if (BluetoothHandler.isSupported())
+            await BluetoothHandler.send("shutdown");
+        }
+
+        private void cbxDeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string device = cbxDeviceList.SelectedItem.ToString();
+            BluetoothHandler.selectDevice(device);
+        }
+
+        private void btnMediaFullScreen_Click(object sender, RoutedEventArgs e)
+        {
+            if(!fullScreen)
             {
-                bs.Owner = this;
-                bs.Show();
+                layoutRoot.Children.Remove(gdMediaWrapper);
+                this.Background = new SolidColorBrush(Colors.Black);
+                this.Content = gdMediaWrapper;
+                this.MaxHeight = SystemParameters.MaximumWindowTrackHeight;
+                this.WindowState = WindowState.Maximized;
             }
+            else
+            {
+                this.Content = layoutRoot;
+                layoutRoot.Children.Add(gdMediaWrapper);
+                this.Background = new SolidColorBrush(Colors.LightGray);
+                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                this.WindowState = WindowState.Normal;
+            }
+            fullScreen = !fullScreen;
+        }
+        private void btnMapFullScreen_Click(object sender, RoutedEventArgs e)
+        {
+            if (!fullScreen)
+            {
+                layoutRoot.Children.Remove(gdMapWrapper);
+                this.Background = new SolidColorBrush(Colors.Black);
+                this.Content = gdMapWrapper;
+                this.MaxHeight = SystemParameters.MaximumWindowTrackHeight;
+                this.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                this.Content = layoutRoot;
+                layoutRoot.Children.Add(gdMapWrapper);
+                this.Background = new SolidColorBrush(Colors.LightGray);
+                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                this.WindowState = WindowState.Normal;
+            }
+            fullScreen = !fullScreen;
         }
     }
 }

@@ -11,112 +11,112 @@
 	ResizeMode="NoResize"
 	Style="{StaticResource basicWindow}" Background="#FFEAEAEA"
 	>
-	
-	<!-- remove chrome !-->
+
+    <!-- remove chrome !-->
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0"
                             GlassFrameThickness="0,0,0,1"
                             ResizeBorderThickness="5" />
     </shell:WindowChrome.WindowChrome>
 
-	<!-- underlying layout grid -->
-	<Grid x:Name="layoutRoot">
-		<Grid.Style>
-			<Style TargetType="{x:Type Grid}">
-				<Style.Triggers>
-				<DataTrigger Binding="{Binding ElementName=mainWindow, Path=WindowState}" Value="Maximized">
-					<Setter Property="Margin" Value="8,8,8,8" />
-				</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</Grid.Style>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="5*"/> <!-- title bar -->
-			<RowDefinition Height="6*"/> <!-- options bar -->
-			<RowDefinition Height="5*"/> <!-- row 1 titles -->
-			<RowDefinition Height="42*" /> <!-- row 1 -->
-			<RowDefinition Height="5*" />  <!-- row 2 titles -->
-			<RowDefinition Height="42*"/>  <!-- row 2 -->
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="50*" />
+    <!-- underlying layout grid -->
+    <Grid x:Name="layoutRoot">
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=mainWindow, Path=WindowState}" Value="Maximized">
+                        <Setter Property="Margin" Value="8,8,8,8" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <!-- title bar -->
+            <RowDefinition Height="4*"/>
+            <!-- options bar -->
+            <RowDefinition Height="5*"/>
+            <!-- row 1 titles -->
+            <RowDefinition Height="49*" />
+            <!-- row 1 -->
+            <RowDefinition Height="5*" />
+            <!-- row 2 titles -->
+            <RowDefinition Height="32*"/>
+            <!-- row 2 -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*" />
             <ColumnDefinition Width="50*" />
         </Grid.ColumnDefinitions>
 
-		<!-- title bar -->
-		<Label Content="Remote Inspection Unit" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.ColumnSpan="2" Height="30" Width="300" FontSize="16" FontWeight="Bold" Margin="0,0,0,0" FontFamily="Microsoft JhengHei UI Light"/>
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2" Height="30" Width="78">
-			<Button x:Name="btnMinimize" Click="btnMinClick" ToolTip="Minimize" Style="{StaticResource basicButton}" Content="0" FontFamily="Marlett" IsCancel="True" Width="26" />
-			<Button x:Name="btnMaximize" Click="btnMaxClick" ToolTip="Maximize" Style="{StaticResource basicButton}" FontFamily="Marlett" Content="1" Width="26"/>
-			<Button x:Name="btnClose" Click="btnExitClick" ToolTip="Close"  Style="{StaticResource exitButton}" FontFamily="Marlett" Content="r" Width="26"/>
-		</StackPanel>
+        <!-- title bar -->
+        <Label Content="Remote Inspection Unit" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="2" Height="30" Width="300" FontSize="16" FontWeight="ExtraBold" Margin="0,0,0,0" FontFamily="Microsoft JhengHei UI Light"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2" Height="30" Width="78">
+            <Button x:Name="btnMinimize" Click="btnMinClick" ToolTip="Minimize" Style="{StaticResource basicButton}" Content="0" FontFamily="Marlett" IsCancel="True" Width="26" />
+            <Button x:Name="btnMaximize" Click="btnMaxClick" ToolTip="Maximize" Style="{StaticResource basicButton}" FontFamily="Marlett" Content="1" Width="26"/>
+            <Button x:Name="btnClose" Click="btnExitClick" ToolTip="Close"  Style="{StaticResource exitButton}" FontFamily="Marlett" Content="r" Width="26"/>
+        </StackPanel>
 
-		<!-- options bar -->
-		<StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Height="auto"  Grid.Row="1" VerticalAlignment="Top" Margin="0,0,10,0" Width="155">
-			<Button Name="btnDevices" Click="btnDevices_Click" ContextMenuService.IsEnabled="False" Height="43.2" Width="103" VerticalAlignment="Top" Style="{DynamicResource controlButton}" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Background="#00000000" Foreground="Black">
-				<StackPanel>
-					<TextBlock Height="32.5"><Run Text="Devices"/><Run Text=" "/><InlineUIContainer>
-							<Image Source="icon/bdown.png" Style="{DynamicResource controlImage}" Height="32.5" VerticalAlignment="Center" />
-						</InlineUIContainer></TextBlock>
-				</StackPanel>
-				<Button.ContextMenu>
-                    <ContextMenu >
-                        <MenuItem Header="Search..." x:Name="searchBtn" Click="btnSearch_Click"/>
-					</ContextMenu>
-				</Button.ContextMenu>
-			</Button>
-			<Button x:Name="btnSettings" Height="26.95" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
-				<Image Source="icon/settings.png" Style="{DynamicResource controlImage}" Margin="5,0" Height="16.95" Width="38"/>
-			</Button>
-		</StackPanel>
+        <!-- options bar -->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
+            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" Width="120" SelectionChanged="cbxDeviceList_SelectionChanged"/>
+            <Button x:Name="btnSettings" Height="26.95" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
+                <Image Source="icon/settings.png" Style="{DynamicResource controlImage}" Margin="5,0" Height="16.95" Width="38"/>
+            </Button>
+        </StackPanel>
 
-		<!-- row 1 titles -->
-		<Label Content="Camera View" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" FontFamily="Microsoft JhengHei Light" FontSize="16" Height="32.5" Width="105.773" Foreground="Black"/>
-		<Label Content="Map View" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Top" Height="32.5" Width="83.533" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Grid.Column="1" Foreground="Black"/>
-		
-		<!-- row 1 items -->
-		<MediaElement x:Name="mdePlayer" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Top" Width="432" Height="247.103" Margin="0,0,10,0"/>
-		<Canvas x:Name="cnvsMap" Grid.Row="3" HorizontalAlignment="Right" Height="266.42" VerticalAlignment="Top" Width="437" Background="#FF3D78A7" Grid.Column="1" UseLayoutRounding="False" Margin="0,0.7,4,0"/>
-        <Canvas x:Name="cnvsDeleteMe" Grid.Row="3" HorizontalAlignment="Left" Height="267.12" VerticalAlignment="Top" Width="438" Background="#FF3D78A7" Grid.Column="0" UseLayoutRounding="False" Margin="4,0,0,0"/>
-		
-		<!-- row 2 titles -->
-		<Label Content="System Log" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2" Foreground="Black"/>
+        <!-- row 1 titles -->
+        <Label Content="Camera View" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" FontFamily="Microsoft JhengHei Light" FontSize="16" Height="32.5" Width="105.773" Foreground="Black"/>
+        <Label Content="Map View" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Top" Height="32.5" Width="83.533" FontFamily="Microsoft JhengHei UI Light" FontSize="16" Grid.Column="1" Foreground="Black"/>
 
-		<!-- row 2 items -->
-		<ListBox x:Name="lstLogList" HorizontalAlignment="Right" Height="257.103" VerticalAlignment="Top" Width="434" Margin="0,0,4,0" Grid.Row="5" Background="#FF5C6D7E" Grid.Column="1"/>
-		<!-- controls -->
-		<Grid HorizontalAlignment="Left" Height="247.103" Grid.Row="5" VerticalAlignment="Top" Width="432" Margin="4,0,0,0">
-			<Button x:Name="btnUp" HorizontalAlignment="Left" Margin="97,50,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
-				<StackPanel>
-					<Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}"/>
-				</StackPanel>
-			</Button>
-			<Button x:Name="btnDown" HorizontalAlignment="Left" Margin="97,147,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
-				<StackPanel>
-					<Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
-						<Image.RenderTransform>
-							<TransformGroup>
-								<RotateTransform Angle="179.508"/>
-								<TranslateTransform Y="5"/>
-							</TransformGroup>
-						</Image.RenderTransform>
-					</Image>
-				</StackPanel>
-			</Button>
-			<Button x:Name="btnLeft" HorizontalAlignment="Left" Margin="44.144,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
-				<StackPanel>
-					<Image Source="icon/leftarrow.png" Style="{DynamicResource controlImage}" />	
-				</StackPanel>
-			</Button>
-			<Button x:Name="btnRight" HorizontalAlignment="Left" Margin="149.463,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
-				<StackPanel>
-					<Image Source="icon/rightarrow.png" Style="{DynamicResource controlImage}" />
-				</StackPanel>
-			</Button>
-			<!-- other buttons -->
-            <Button Content="Capture" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.24,0.601" Height="22"/>
-            <Button Content="Manual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,102,20,0" VerticalAlignment="Top" Width="75" Height="22"/>
-            <Button Content="Recall" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,134,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22"></Button>
-		</Grid>
+        <!-- row 1 items -->
+        <Grid x:Name="gdMapWrapper" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
+            <Canvas x:Name="cnvsMap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF3D78A7" UseLayoutRounding="False"/>
+            <Button x:Name="btnMapFullScreen" Style="{StaticResource actionButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
+        </Grid>
+        <Grid x:Name="gdMediaWrapper" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">
+            <MediaElement x:Name="mdePlayer" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"/>
+            <Canvas x:Name="cnvsDeleteMe" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF3D78A7" UseLayoutRounding="False"/>
+            <Button x:Name="btnMediaFullScreen" Style="{StaticResource actionButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Full Screen" Width="75" Click="btnMediaFullScreen_Click" Margin="0,0,2,1"/>
+        </Grid>
+        <!-- row 2 titles -->
+        <Label Content="System Log" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2" Foreground="Black"/>
+
+        <!-- row 2 items -->
+        <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="5" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,8"/>
+        <!-- controls -->
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="5">
+            <Button x:Name="btnUp" HorizontalAlignment="Left" Margin="97,10,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
+                <StackPanel>
+                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="97,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
+                <StackPanel>
+                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="179.508"/>
+                                <TranslateTransform Y="5"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnLeft" HorizontalAlignment="Left" Margin="49,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
+                <StackPanel>
+                    <Image Source="icon/leftarrow.png" Style="{DynamicResource controlImage}" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="146,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
+                <StackPanel>
+                    <Image Source="icon/rightarrow.png" Style="{DynamicResource controlImage}" />
+                </StackPanel>
+            </Button>
+            <!-- other buttons -->
+            <Button Content="Capture" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,43,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.24,0.601" Height="22"/>
+            <Button Content="Manual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" Height="22" Click="Button_Click"/>
+            <Button Content="Recall" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,97,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22"></Button>
+        </Grid>
     </Grid>
 </Window>

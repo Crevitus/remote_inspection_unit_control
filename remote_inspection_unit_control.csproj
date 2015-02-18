@@ -88,13 +88,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BluetoothHandler.cs" />
-    <Compile Include="SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
-    </Compile>
-    <Page Include="bluetooth_search.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,17 +96,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="bluetooth_search.xaml.cs">
-      <DependentUpon>bluetooth_search.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SplashScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="themes\Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
