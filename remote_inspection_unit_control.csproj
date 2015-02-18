@@ -134,13 +134,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon\downarrow.png" />
-    <Resource Include="icon\leftarrow.png" />
-    <Resource Include="icon\rightarrow.png" />
     <Resource Include="icon\uparrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="icon\bdown.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon\settings.png" />

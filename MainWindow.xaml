@@ -58,8 +58,11 @@
         </StackPanel>
 
         <!-- options bar -->
-        <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
-            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" Width="120" SelectionChanged="cbxDeviceList_SelectionChanged"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
+            <Button x:Name="btnDisconnect" Content="Disconnect" Style="{StaticResource actionButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click"/>
+            <Label x:Name="lblConStatus" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Red"/>
+            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="141" DropDownClosed="cbxDeviceList_DropDownClosed" Margin="0,0,0,0.4"/>
+            <Button x:Name="btnSearch" Content="Search" Style="{StaticResource actionButton}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75" Click="btnSearch_Click" Margin="4,0,0,0"/>
             <Button x:Name="btnSettings" Height="26.95" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
                 <Image Source="icon/settings.png" Style="{DynamicResource controlImage}" Margin="5,0" Height="16.95" Width="38"/>
             </Button>
@@ -80,42 +83,79 @@
             <Button x:Name="btnMediaFullScreen" Style="{StaticResource actionButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Full Screen" Width="75" Click="btnMediaFullScreen_Click" Margin="0,0,2,1"/>
         </Grid>
         <!-- row 2 titles -->
-        <Label Content="System Log" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2" Foreground="Black"/>
+        <Label Content="System Log" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Top" FontSize="16" FontFamily="Microsoft JhengHei UI Light" Grid.RowSpan="2" Foreground="Black"/>
+        <Button Content="Capture" Style="{StaticResource actionButton}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="22" Margin="10,7,0,0"/>
 
         <!-- row 2 items -->
         <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="5" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,8"/>
         <!-- controls -->
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="5">
-            <Button x:Name="btnUp" HorizontalAlignment="Left" Margin="97,10,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
+            <Ellipse HorizontalAlignment="Left" Height="170" Margin="60,19,0,0" Stroke="LightGray" VerticalAlignment="Top" Width="170">
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FFC3BABA" Offset="1"/>
+                        <GradientStop Color="White"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Button x:Name="btnUp" HorizontalAlignment="Left" Margin="108,10,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnUp_Click">
                 <StackPanel>
-                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}"/>
+                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
                 </StackPanel>
             </Button>
-            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="97,102,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
+            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="108,114,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
                 <StackPanel>
                     <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
                         <Image.RenderTransform>
                             <TransformGroup>
-                                <RotateTransform Angle="179.508"/>
+                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
                                 <TranslateTransform Y="5"/>
                             </TransformGroup>
                         </Image.RenderTransform>
                     </Image>
                 </StackPanel>
             </Button>
-            <Button x:Name="btnLeft" HorizontalAlignment="Left" Margin="49,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
+            <Button x:Name="btnLeft" HorizontalAlignment="Left" Margin="50,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnLeft_Click" >
                 <StackPanel>
-                    <Image Source="icon/leftarrow.png" Style="{DynamicResource controlImage}" />
+                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform Y="5"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
                 </StackPanel>
             </Button>
-            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="146,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717">
-                <StackPanel>
-                    <Image Source="icon/rightarrow.png" Style="{DynamicResource controlImage}" />
+            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="164,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnRight_Click">
+                <StackPanel RenderTransformOrigin="0.5,0.5">
+                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-360"/>
+                                <TranslateTransform Y="5"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
                 </StackPanel>
             </Button>
             <!-- other buttons -->
-            <Button Content="Capture" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,43,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.24,0.601" Height="22"/>
-            <Button Content="Manual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" Height="22" Click="Button_Click"/>
+            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnManual_Click"/>
             <Button Content="Recall" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,97,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22"></Button>
         </Grid>
     </Grid>

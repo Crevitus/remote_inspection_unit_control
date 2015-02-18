@@ -96,7 +96,7 @@
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="BorderThickness"
-                Value="2" />
+                Value="1" />
         <Setter Property="Cursor"
 				Value="Hand"/>
         <Setter Property="FontFamily"
