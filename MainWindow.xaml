@@ -112,7 +112,7 @@
                     </Image>
                 </StackPanel>
             </Button>
-            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="108,114,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" >
+            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="108,114,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnDown_Click" >
                 <StackPanel>
                     <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
                         <Image.RenderTransform>
@@ -140,7 +140,7 @@
                     </Image>
                 </StackPanel>
             </Button>
-            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="164,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnRight_Click">
+            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="167,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnRight_Click">
                 <StackPanel RenderTransformOrigin="0.5,0.5">
                     <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
                         <Image.RenderTransform>

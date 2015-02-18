@@ -151,6 +151,14 @@ namespace remote_inspection_unit_control
                 layoutRoot.Children.Add(control);
                 this.Background = new SolidColorBrush(Colors.LightGray);
                 this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                if (control.Name == "gdMapWrapper")
+                {
+                    control.Margin = new Thickness(4, 0, 8, 0);
+                }
+                else
+                {
+                    control.Margin = new Thickness(8, 0, 4, 0);
+                }
                 if (!_isMax)
                 {
                     this.WindowState = WindowState.Normal;
@@ -179,6 +187,11 @@ namespace remote_inspection_unit_control
             BluetoothHandler.send("r");
         }
 
+        private void btnDown_Click(object sender, RoutedEventArgs e)
+        {
+            BluetoothHandler.send("b");
+        }
+
         private void btnDisconnect_Click(object sender, RoutedEventArgs e)
         {
             BluetoothHandler.disconnect();
@@ -190,5 +203,6 @@ namespace remote_inspection_unit_control
         {
             getDevices();
         }
+
     }
 }
