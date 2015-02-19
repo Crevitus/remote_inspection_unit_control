@@ -93,14 +93,10 @@ C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\bin\Debug\ru\Syste
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
-C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.baml
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.baml
-C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\SplashScreen.baml
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\themes\Light.baml
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\App.baml
-C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\bluetooth_search.g.cs
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.g.cs
-C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\SplashScreen.g.cs
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\App.g.cs
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control_MarkupCompile.cache
 C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.g.resources

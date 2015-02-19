@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icon/settings.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("daticon.ico")]
 
 
