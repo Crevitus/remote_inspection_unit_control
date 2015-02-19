@@ -40,7 +40,7 @@ namespace remote_inspection_unit_control
                 _bluetoothStream.Close();
                 _client = new BluetoothClient();
             }
-            Guid _serviceGuid = new Guid("94f39d29-7d6d-437d-973b-fba39e49d4ee");
+            Guid _serviceGuid = new Guid("42656e20-6c6f-7665-7320-636f636b7321");
             _selectedDevice = _devicesInfo[device];
             try
             {

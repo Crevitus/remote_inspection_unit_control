@@ -61,7 +61,7 @@
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
             <Button x:Name="btnDisconnect" Content="Disconnect" Style="{StaticResource actionButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click"/>
             <Label x:Name="lblConStatus" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Red"/>
-            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="141" DropDownClosed="cbxDeviceList_DropDownClosed" Margin="0,0,0,0.4"/>
+            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="195" DropDownClosed="cbxDeviceList_DropDownClosed" Margin="0,0,0,0.4" HorizontalContentAlignment="Center"/>
             <Button x:Name="btnSearch" Content="Search" Style="{StaticResource actionButton}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75" Click="btnSearch_Click" Margin="4,0,0,0"/>
             <Button x:Name="btnSettings" Height="26.95" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
                 <Image Source="icon/settings.png" Style="{DynamicResource controlImage}" Margin="5,0" Height="16.95" Width="38"/>
@@ -90,14 +90,7 @@
         <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="5" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,8"/>
         <!-- controls -->
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="5">
-            <Ellipse HorizontalAlignment="Left" Height="170" Margin="60,19,0,0" Stroke="LightGray" VerticalAlignment="Top" Width="170">
-                <Ellipse.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FFC3BABA" Offset="1"/>
-                        <GradientStop Color="White"/>
-                    </LinearGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
+            
             <Button x:Name="btnUp" HorizontalAlignment="Left" Margin="108,10,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" Click="btnUp_Click">
                 <StackPanel>
                     <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5">

@@ -174,22 +174,22 @@ namespace remote_inspection_unit_control
 
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {
-            BluetoothHandler.send("f");
+            BluetoothHandler.send("0150");
         }
 
         private void btnLeft_Click(object sender, RoutedEventArgs e)
         {
-            BluetoothHandler.send("l");
+            BluetoothHandler.send("1150");
         }
 
         private void btnRight_Click(object sender, RoutedEventArgs e)
         {
-            BluetoothHandler.send("r");
+            BluetoothHandler.send("2150");
         }
 
         private void btnDown_Click(object sender, RoutedEventArgs e)
         {
-            BluetoothHandler.send("b");
+            BluetoothHandler.send("3150");
         }
 
         private void btnDisconnect_Click(object sender, RoutedEventArgs e)
