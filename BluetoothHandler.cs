@@ -22,6 +22,7 @@ namespace remote_inspection_unit_control
         private static BluetoothClient _client = new BluetoothClient();
         private static NetworkStream _bluetoothStream;
         private static bool _connected = false;
+        private static Guid _serviceGuid = new Guid("42656e20-6c6f-7665-7320-636f636b7321");
 
         public static bool Connected
         {
@@ -31,6 +32,7 @@ namespace remote_inspection_unit_control
         public static void disconnect()
         {
             _bluetoothStream.Dispose();
+            _connected = false;
         }
 
         public static bool selectDevice(string device)
@@ -40,7 +42,7 @@ namespace remote_inspection_unit_control
                 _bluetoothStream.Close();
                 _client = new BluetoothClient();
             }
-            Guid _serviceGuid = new Guid("42656e20-6c6f-7665-7320-636f636b7321");
+     
             _selectedDevice = _devicesInfo[device];
             try
             {
@@ -49,12 +51,12 @@ namespace remote_inspection_unit_control
                 // connecting
                 _client.Connect(blueEndPoint);
 
-                // get stream for send the data
                  _bluetoothStream = _client.GetStream();
                  _connected = true;
             }
             catch(SocketException)
             {
+                _connected = false;
                 MessageBox.Show("Could not connect to device, please make sure it is in range and switched on.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return _connected;
@@ -73,33 +75,29 @@ namespace remote_inspection_unit_control
             return items;
         }
 
-        public static void send(string content)
+        public static bool send(string content)
         {
-            try
+            if (_client.Connected && _bluetoothStream != null)
             {
-                // if all is ok to send
-                if (_client.Connected && _bluetoothStream != null)
-                {
-                    // write the data in the stream
-                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
-                    _bluetoothStream.Write(buffer, 0, buffer.Length);
-                    _bluetoothStream.Flush();
-                    //bluetoothStream.Close();
-
-                }
-                else
-                {
-                    throw new IOException();
-                }
+                // write the data in the stream
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
+                _bluetoothStream.Write(buffer, 0, buffer.Length);
+                _bluetoothStream.Flush();
+                return true;
             }
-            catch(IOException)
+            else
             {
                 MessageBox.Show("Failed to send message to device.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
-        private static void receive()
+        public static async Task<string> receive()
         {
+            byte[] buffer = new byte[1024];
+            await _bluetoothStream.ReadAsync(buffer, 0, buffer.Length);
+            string data = System.Text.Encoding.Default.GetString(buffer);
+            return data.Remove('0');
         }
     }
 }

@@ -61,7 +61,7 @@
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
             <Button x:Name="btnDisconnect" Content="Disconnect" Style="{StaticResource actionButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click"/>
             <Label x:Name="lblConStatus" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Red"/>
-            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- Select Device --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="195" DropDownClosed="cbxDeviceList_DropDownClosed" Margin="0,0,0,0.4" HorizontalContentAlignment="Center"/>
+            <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- No Devices --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="195" DropDownClosed="cbxDeviceList_DropDownClosed" Margin="0,0,0,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Button x:Name="btnSearch" Content="Search" Style="{StaticResource actionButton}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75" Click="btnSearch_Click" Margin="4,0,0,0"/>
             <Button x:Name="btnSettings" Height="26.95" Style="{DynamicResource controlButton}" ToolTip="Settings" Background="#00000000">
                 <Image Source="icon/settings.png" Style="{DynamicResource controlImage}" Margin="5,0" Height="16.95" Width="38"/>
@@ -74,7 +74,11 @@
 
         <!-- row 1 items -->
         <Grid x:Name="gdMapWrapper" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
-            <Canvas x:Name="cnvsMap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF3D78A7" UseLayoutRounding="False"/>
+            <ScrollViewer x:Name="scrlMapContainer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalScrollBarVisibility="Visible">
+                <Grid x:Name="gdMap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF3D78A7">
+                    <Grid x:Name="gdMapInner" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="auto" Width="auto" Background="#FF3D78A7" UseLayoutRounding="False"/>
+                </Grid>
+            </ScrollViewer>
             <Button x:Name="btnMapFullScreen" Style="{StaticResource actionButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
         </Grid>
         <Grid x:Name="gdMediaWrapper" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">
@@ -148,8 +152,12 @@
                 </StackPanel>
             </Button>
             <!-- other buttons -->
+            <Button Content="North" x:Name="btnNorth" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,102,111.6,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnNorth_Click"/>
+            <Button Content="East" x:Name="btnEast" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,141,111.6,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnEast_Click"/>
+            <Button Content="South" x:Name="btnSouth" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,111.6,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnSouth_Click"/>
+            <Button Content="West" x:Name="btnWest" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,173,111.6,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnWest_Click" RenderTransformOrigin="-0.587,5.291"/>
             <Button Content="Manual" x:Name="btnManual" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnManual_Click"/>
-            <Button Content="Recall" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,97,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22"></Button>
+            <Button Content="Set Up Map" Style="{StaticResource actionButton}" HorizontalAlignment="Right" Margin="0,97,20,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.5,0.5" Height="22" Click="Button_Click"></Button>
         </Grid>
     </Grid>
 </Window>
