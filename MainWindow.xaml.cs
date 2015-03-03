@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using System.Drawing;
+using System.IO;
 
 namespace remote_inspection_unit_control
 {
@@ -23,11 +25,12 @@ namespace remote_inspection_unit_control
     {
         private bool _fullScreen = false;
         private bool _init = false;
-        private Compass _orientation;
-        private Point currentPos;
-        private Line line, line2;
-        private Canvas horizontalLine, verticalLine, rightBottom, leftBottom, rightTop, leftTop;
-        private Dictionary<Point, drawType> position = new Dictionary<Point, drawType>{};
+        private Map mMap;
+        private bool mDown = false;
+        private int mPosX = 0, mPosY = 0;
+        private System.Drawing.Point mMapPos = new System.Drawing.Point(0, 0);
+        private int mPrev = -1;
+        Bitmap mImage;
         private readonly string FORWARD = "450", LEFT = "350", RIGHT = "250", BACKWARD = "150", STOP = "0";
 
         public MainWindow()
@@ -37,377 +40,16 @@ namespace remote_inspection_unit_control
             getDevices();
         }
 
-        private enum Compass
-        {
-            North, East, South, West
-        };
-
-        private enum drawType
-        {
-            horizontalLine, verticalLine, rightBottom, leftBottom, rightTop, leftTop
-        };
-
         private void initialiseMap()
         {
             if (!_init)
             {
-                int x, y;
-                x = (int)gdMap.ActualWidth;
-                y = (int)gdMap.ActualHeight;
-                refreshGrid(x, y);
-                currentPos.X = (int)5;
-                currentPos.Y = (int)5;
+                mImage = new Bitmap((int)gdMapWrapper.ActualWidth, (int)gdMapWrapper.ActualHeight);
+                mMap = new Map(mImage);
+                refresh();
                 _init = true;
             }
         }
-
-        private void refreshGrid(int x, int y)
-        {
-            int rows, col;
-            ColumnDefinition gridCol;
-            RowDefinition gridrow;
-
-            col = x / 30;
-            rows = y / 30;
-
-            for (int i = 0; i < col; i++)
-            {
-                gridCol = new ColumnDefinition();
-                gridCol.Name = "col" + i.ToString();
-                gridCol.Width = new GridLength(30);
-                gdMap.ColumnDefinitions.Add(gridCol);
-            }
-
-            for (int i = 0; i < rows; i++)
-            {
-
-                gridrow = new RowDefinition();
-                gridrow.Name = "row" + i.ToString();
-                gridrow.Height = new GridLength(30);
-                gdMap.RowDefinitions.Add(gridrow);
-            }
-
-        }
-
-        private void refreshHorizontalLine()
-        {
-            horizontalLine = new Canvas();
-            refreshLines();
-
-            line.X1 = 0;
-            line.X2 = 30;
-            line.Y1 = 0;
-            line.Y2 = 0;
-
-            line2.X1 = 0;
-            line2.X2 = 30;
-            line2.Y1 = 30;
-            line2.Y2 = 30;
-
-            horizontalLine.Children.Add(line);
-            horizontalLine.Children.Add(line2);
-        }
-
-        private void refreshVerticalLine()
-        {
-            verticalLine = new Canvas();
-            refreshLines();
-            line.X1 = 0;
-            line.X2 = 0;
-            line.Y1 = 0;
-            line.Y2 = 30;
-
-            line2.X1 = 30;
-            line2.X2 = 30;
-            line2.Y1 = 0;
-            line2.Y2 = 30;
-
-            verticalLine.Children.Add(line);
-            verticalLine.Children.Add(line2);
-        }
-
-        private void refreshRightBottom()
-        {
-            rightBottom = new Canvas();
-            refreshLines();
-
-            line.X1 = 30;
-            line.X2 = 30;
-            line.Y1 = 0;
-            line.Y2 = 30;
-
-            line2.X1 = 30;
-            line2.X2 = 0;
-            line2.Y1 = 30;
-            line2.Y2 = 30;
-
-            rightBottom.Children.Add(line);
-            rightBottom.Children.Add(line2);
-        }
-
-        private void refreshLeftBottom()
-        {
-            leftBottom = new Canvas();
-            refreshLines();
-
-            line.X1 = 0;
-            line.X2 = 0;
-            line.Y1 = 0;
-            line.Y2 = 30;
-
-            line2.X1 = 0;
-            line2.X2 = 30;
-            line2.Y1 = 30;
-            line2.Y2 = 30;
-
-            leftBottom.Children.Add(line);
-            leftBottom.Children.Add(line2);
-        }
-
-        private void refreshRightTop()
-        {
-            rightTop = new Canvas();
-            refreshLines();
-
-            line.X1 = 0;
-            line.X2 = 30;
-            line.Y1 = 0;
-            line.Y2 = 0;
-
-            line2.X1 = 30;
-            line2.X2 = 30;
-            line2.Y1 = 0;
-            line2.Y2 = 30;
-
-            rightTop.Children.Add(line);
-            rightTop.Children.Add(line2);
-        }
-
-        private void refreshLeftTop()
-        {
-            leftTop = new Canvas();
-            refreshLines();
-
-            line.X1 = 0;
-            line.X2 = 30;
-            line.Y1 = 0;
-            line.Y2 = 0;
-
-            line2.X1 = 0;
-            line2.X2 = 0;
-            line2.Y1 = 0;
-            line2.Y2 = 30;
-
-            leftTop.Children.Add(line);
-            leftTop.Children.Add(line2);
-        }
-
-        private void refreshLines()
-        {
-            // Create a red Brush
-            SolidColorBrush redBrush = new SolidColorBrush();
-            redBrush.Color = Colors.DarkOrange;
-            //first line
-            line = new Line();
-            line.StrokeThickness = 4;
-            line.Stroke = redBrush;
-            line.StrokeThickness = 4;
-            line.Stroke = redBrush;
-
-            //second line
-            line2 = new Line();
-            line2.StrokeThickness = 4;
-            line2.Stroke = redBrush;
-            line2.StrokeThickness = 4;
-            line2.Stroke = redBrush;
-        }
-
-        private void getPos()
-        {
-            
-        }
-
-        private void setPos(int col, int row, drawType type)
-        {
-            Point tempPos = new Point();
-            tempPos.X = col;
-            tempPos.Y = row;
-            position.Add(tempPos, type);
-        }
-
-        private void drawLine(Compass direction)
-        {
-            initialiseMap();
-            if (currentPos.Y == 0)
-            {
-                gdMap.RowDefinitions.Clear();
-                currentPos.Y = currentPos.Y + 8;
-                foreach (UIElement child in gdMap.Children)
-                {
-                    int tempRow = (int)child.GetValue(Grid.RowProperty);
-                    child.SetValue(Grid.RowProperty, tempRow + 8);
-                }
-                gdMap.Height = gdMap.ActualHeight + 240;
-                refreshGrid((int)gdMap.ActualWidth, (int)gdMap.Height);
-            }
-            if (currentPos.X == 0)
-            {
-                gdMap.ColumnDefinitions.Clear();
-                currentPos.X = currentPos.X + 8;
-                foreach (UIElement child in gdMap.Children)
-                {
-                    int tempCol = (int)child.GetValue(Grid.ColumnProperty);
-                    child.SetValue(Grid.ColumnProperty, tempCol + 8);
-                }
-                gdMap.Width = gdMap.ActualWidth + 240;
-                refreshGrid((int)gdMap.Width, (int)gdMap.ActualHeight);
-            }
-            //direction to go
-            switch (direction)
-            {
-                case Compass.North:
-                    //direction facing
-                    switch (_orientation)
-                    {
-                        case Compass.North:
-                           refreshVerticalLine();
-                           currentPos.Y = currentPos.Y - 1;
-                           verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                           verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMap.Children.Add(verticalLine);
-                            break;
-                        case Compass.East:
-                           refreshRightBottom();
-                           currentPos.X = currentPos.X + 1;
-                           rightBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                           rightBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMap.Children.Add(rightBottom);
-                            break;
-                        case Compass.South:
-                           refreshVerticalLine();
-                           currentPos.Y = currentPos.Y - 1;
-                           verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                           verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMap.Children.Add(verticalLine);
-                            break;
-                        case Compass.West:
-                           refreshLeftBottom();
-                           currentPos.X = currentPos.X - 1;
-                           leftBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                           leftBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMap.Children.Add(leftBottom);
-                            break;
-                    }
-                    _orientation = Compass.North;
-                    break;
-                case Compass.East:
-                    //direction facing
-                    switch (_orientation)
-                    {
-                        case Compass.North:
-                            refreshLeftTop();
-                            currentPos.Y = currentPos.Y - 1;
-                            leftTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            leftTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(leftTop);
-                            break;
-                        case Compass.East:
-                            refreshHorizontalLine();
-                            currentPos.X = currentPos.X + 1;
-                            horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(horizontalLine);
-                            break;
-                        case Compass.South:
-                            refreshLeftBottom();
-                            currentPos.Y = currentPos.Y + 1;
-                            leftBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            leftBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(leftBottom);
-                            break;
-                        case Compass.West:
-                            refreshHorizontalLine();
-                            currentPos.X = currentPos.X + 1;
-                            horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(horizontalLine);
-                            break;
-                    }
-                    _orientation = Compass.East;
-                    break;
-                case Compass.South:
-                    //direction facing
-                    switch (_orientation)
-                    {
-                        case Compass.North:
-                            refreshVerticalLine();
-                            currentPos.Y = currentPos.Y + 1;
-                            verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(verticalLine);
-                            break;
-                        case Compass.East:
-                            refreshRightTop();
-                            currentPos.X = currentPos.X + 1;
-                            rightTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            rightTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(rightTop);
-                            break;
-                        case Compass.South:
-                            refreshVerticalLine();
-                            currentPos.Y = currentPos.Y + 1;
-                            verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(verticalLine);
-                            break;
-                        case Compass.West:
-                            refreshLeftTop();
-                            currentPos.X = currentPos.X - 1;
-                            leftTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            leftTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(leftTop);
-                            break;
-                    }
-                    _orientation = Compass.South;
-                    break;
-                case Compass.West:
-                    //direction facing
-                    switch (_orientation)
-                    {
-                        case Compass.North:
-                            refreshRightTop();
-                            currentPos.Y = currentPos.Y - 1;
-                            rightTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            rightTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(rightTop);
-                            break;
-                        case Compass.East:
-                            refreshHorizontalLine();
-                            currentPos.X = currentPos.X - 1;
-                            horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(horizontalLine);
-                            break;
-                        case Compass.South:
-                            refreshRightBottom();
-                            currentPos.Y = currentPos.Y + 1;
-                            rightBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            rightBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(rightBottom);
-                            break;
-                        case Compass.West:
-                            refreshHorizontalLine();
-                            currentPos.X = currentPos.X - 1;
-                            horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
-                            horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMap.Children.Add(horizontalLine);
-                            break;
-                    }
-                    _orientation = Compass.West;
-                    break;
-            }
-        }
-
         private async void getDevices()
         {
             btnSearch.IsEnabled = false;
@@ -463,26 +105,124 @@ namespace remote_inspection_unit_control
             
 
         }
+
         private void btnNorth_Click(object sender, RoutedEventArgs e)
         {
-            drawLine(Compass.North);
+            initialiseMap();
+            bool[] b = new bool[] { false, true, true, true };
+            if (mPrev >= 0) b[mPrev] = false;
+            mMap.add(mMapPos, b);
+            mMapPos.Y -= 1;
+            refresh();
+            mPrev = 1;
         }
         private void btnEast_Click(object sender, RoutedEventArgs e)
         {
-            drawLine(Compass.East);
+            initialiseMap();
+            bool[] b = new bool[] { true, true, true, false };
+            if (mPrev >= 0) b[mPrev] = false;
+            mMap.add(mMapPos, b);
+            mMapPos.X += 1;
+            refresh();
+            mPrev = 2;
         }
         private void btnSouth_Click(object sender, RoutedEventArgs e)
         {
-            drawLine(Compass.South);
+            initialiseMap();
+            bool[] b = new bool[] { true, false, true, true };
+            if (mPrev >= 0) b[mPrev] = false;
+            mMap.add(mMapPos, b);
+            mMapPos.Y += 1;
+            refresh();
+            mPrev = 0;
         }
         private void btnWest_Click(object sender, RoutedEventArgs e)
         {
-            drawLine(Compass.West);
+            initialiseMap();
+            bool[] b = new bool[] { true, true, false, true };
+            if (mPrev >= 0) b[mPrev] = false;
+            mMap.add(mMapPos, b);
+            mMapPos.X -= 1;
+            refresh();
+            mPrev = 3;
+        }
+
+          public void refresh()
+        {
+            mMap.draw();
+            map.Source = bitmapToImageSource(mImage);
+            map.InvalidateVisual();
+        }
+
+        BitmapImage bitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
+
+        
+        private void map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mDown = true;
+            mPosX = (int)e.GetPosition(this).X;
+            mPosY = (int)e.GetPosition(this).Y;
+        }
+
+        private void map_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (mDown)
+            {
+                int xDif = (int)(mPosX - e.GetPosition(this).X);
+                int yDif = (int)(mPosY - e.GetPosition(this).Y);
+                if (xDif < 30 && xDif > -30 &&
+                    yDif < 30 && yDif > -30) return;
+
+                if (xDif > yDif)
+                {
+                    if (xDif > 0) yDif = 0;
+                    else xDif = 0;
+                }
+                if (yDif > xDif)
+                {
+                    if (yDif > 0) xDif = 0;
+                    else yDif = 0;
+                }
+
+                if (xDif < 0) xDif = -1;
+                if (xDif > 0) xDif = 1;
+                if (yDif > 0) yDif = 1;
+                if (yDif < 0) yDif = -1;
+                mMap.StartLoc = new System.Drawing.Point(mMap.StartLoc.X + xDif, mMap.StartLoc.Y + yDif);
+                refresh();
+                mPosX = (int)e.GetPosition(this).X;
+                mPosY = (int)e.GetPosition(this).Y;
+            }
+        }
+
+        private void map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            mDown = false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            initialiseMap();
+            mMap.StartLoc = new System.Drawing.Point(0, 0);
+            refresh();
+        }
+
+        private void map_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mDown = false;
         }
 
         private void cbxDeviceList_DropDownClosed(object sender, EventArgs e)
@@ -493,7 +233,6 @@ namespace remote_inspection_unit_control
                 if (BluetoothHandler.selectDevice(device))
                 {
                     getData();
-                    initialiseMap();
                     lblConStatus.Content = "Connected";
                     lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
                     btnDisconnect.IsEnabled = true;

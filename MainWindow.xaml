@@ -4,6 +4,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Remote Inspection Unit"
         x:Name="mainWindow"
+        MinHeight="500"
+        MinWidth="700"
 	    Height="700" 
 	    Width="900"
 	    WindowStartupLocation="CenterScreen" 
@@ -14,7 +16,6 @@
     <!-- window commands -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-
             <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
                 <Button x:Name="btnDisconnect" Content="Disconnect" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click" />
                 <Label x:Name="lblConStatus" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Black"/>
@@ -47,10 +48,7 @@
 
         <!-- row 1 items -->
         <Grid x:Name="gdMapWrapper" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
-            <ScrollViewer x:Name="scrlMapContainer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalScrollBarVisibility="Auto" PanningMode="Both" UseLayoutRounding="True" VerticalScrollBarVisibility="Auto">
-                <Grid x:Name="gdMap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF313D47" ShowGridLines="True">
-                </Grid>
-            </ScrollViewer>
+            <Image x:Name="map" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseMove="map_PreviewMouseMove" PreviewMouseUp="map_PreviewMouseUp" MouseLeave="map_MouseLeave"/>
             <Button x:Name="btnMapFullScreen" Style="{StaticResource basicButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
         </Grid>
         <Grid x:Name="gdMediaWrapper" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">

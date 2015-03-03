@@ -3,15 +3,6 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Resource dictionary entries should be defined here. -->
 
-
-    <Style  x:Key="basicWindow" TargetType="{x:Type Window}">
-        <Style.Triggers>
-            <Trigger Property="IsActive" Value="False">
-                <Setter Property="BorderThickness" Value="1,1,1,2" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <Style  x:Key="basicLabel"
            TargetType="{x:Type Label}">
         <Setter Property="Foreground"
