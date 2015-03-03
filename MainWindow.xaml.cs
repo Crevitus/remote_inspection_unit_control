@@ -12,30 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace remote_inspection_unit_control
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private bool _fullScreen = false;
-        private bool _isMax = false;
-        private Compass _orientation = Compass.North;
+        private bool _init = false;
+        private Compass _orientation;
         private Point currentPos;
         private Line line, line2;
         private Canvas horizontalLine, verticalLine, rightBottom, leftBottom, rightTop, leftTop;
         private Dictionary<Point, drawType> position = new Dictionary<Point, drawType>{};
-        private int expHeight;
+        private readonly string FORWARD = "450", LEFT = "350", RIGHT = "250", BACKWARD = "150", STOP = "0";
+
         public MainWindow()
         {
             InitializeComponent();
-			this.MouseLeftButtonDown += delegate { this.DragMove(); };
-			this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            layoutRoot.Focus();
             getDevices();
-            //for testing
-            MessageBox.Show("Press set up map before using to avoid crash", "Map");     
         }
 
         private enum Compass
@@ -50,37 +49,44 @@ namespace remote_inspection_unit_control
 
         private void initialiseMap()
         {
-            int x, y;
-            x = (int) gdMap.ActualWidth;
-            y = (int) gdMap.ActualHeight;
+            if (!_init)
+            {
+                int x, y;
+                x = (int)gdMap.ActualWidth;
+                y = (int)gdMap.ActualHeight;
+                refreshGrid(x, y);
+                currentPos.X = (int)5;
+                currentPos.Y = (int)5;
+                _init = true;
+            }
+        }
 
-
-            decimal rows, col;
+        private void refreshGrid(int x, int y)
+        {
+            int rows, col;
+            ColumnDefinition gridCol;
+            RowDefinition gridrow;
 
             col = x / 30;
-            col = Math.Round(col, 0);
             rows = y / 30;
-            rows = Math.Round(rows, 0);
 
             for (int i = 0; i < col; i++)
             {
-                ColumnDefinition gridCol = new ColumnDefinition();
+                gridCol = new ColumnDefinition();
                 gridCol.Name = "col" + i.ToString();
                 gridCol.Width = new GridLength(30);
-                gdMapInner.ColumnDefinitions.Add(gridCol);
+                gdMap.ColumnDefinitions.Add(gridCol);
             }
 
-            for(int i = 0; i <  rows; i++)
+            for (int i = 0; i < rows; i++)
             {
 
-                RowDefinition gridrow = new RowDefinition();
+                gridrow = new RowDefinition();
                 gridrow.Name = "row" + i.ToString();
                 gridrow.Height = new GridLength(30);
-                gdMapInner.RowDefinitions.Add(gridrow);
+                gdMap.RowDefinitions.Add(gridrow);
             }
 
-            currentPos.X = (int) 0;
-            currentPos.Y = (int) rows ;
         }
 
         private void refreshHorizontalLine()
@@ -200,7 +206,7 @@ namespace remote_inspection_unit_control
         {
             // Create a red Brush
             SolidColorBrush redBrush = new SolidColorBrush();
-            redBrush.Color = Colors.Red;
+            redBrush.Color = Colors.DarkOrange;
             //first line
             line = new Line();
             line.StrokeThickness = 4;
@@ -231,6 +237,31 @@ namespace remote_inspection_unit_control
 
         private void drawLine(Compass direction)
         {
+            initialiseMap();
+            if (currentPos.Y == 0)
+            {
+                gdMap.RowDefinitions.Clear();
+                currentPos.Y = currentPos.Y + 8;
+                foreach (UIElement child in gdMap.Children)
+                {
+                    int tempRow = (int)child.GetValue(Grid.RowProperty);
+                    child.SetValue(Grid.RowProperty, tempRow + 8);
+                }
+                gdMap.Height = gdMap.ActualHeight + 240;
+                refreshGrid((int)gdMap.ActualWidth, (int)gdMap.Height);
+            }
+            if (currentPos.X == 0)
+            {
+                gdMap.ColumnDefinitions.Clear();
+                currentPos.X = currentPos.X + 8;
+                foreach (UIElement child in gdMap.Children)
+                {
+                    int tempCol = (int)child.GetValue(Grid.ColumnProperty);
+                    child.SetValue(Grid.ColumnProperty, tempCol + 8);
+                }
+                gdMap.Width = gdMap.ActualWidth + 240;
+                refreshGrid((int)gdMap.Width, (int)gdMap.ActualHeight);
+            }
             //direction to go
             switch (direction)
             {
@@ -243,28 +274,28 @@ namespace remote_inspection_unit_control
                            currentPos.Y = currentPos.Y - 1;
                            verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                            verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMapInner.Children.Add(verticalLine);
+                           gdMap.Children.Add(verticalLine);
                             break;
                         case Compass.East:
                            refreshRightBottom();
                            currentPos.X = currentPos.X + 1;
                            rightBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                            rightBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMapInner.Children.Add(rightBottom);
+                           gdMap.Children.Add(rightBottom);
                             break;
                         case Compass.South:
                            refreshVerticalLine();
                            currentPos.Y = currentPos.Y - 1;
                            verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                            verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMapInner.Children.Add(verticalLine);
+                           gdMap.Children.Add(verticalLine);
                             break;
                         case Compass.West:
                            refreshLeftBottom();
                            currentPos.X = currentPos.X - 1;
                            leftBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                            leftBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                           gdMapInner.Children.Add(leftBottom);
+                           gdMap.Children.Add(leftBottom);
                             break;
                     }
                     _orientation = Compass.North;
@@ -278,28 +309,28 @@ namespace remote_inspection_unit_control
                             currentPos.Y = currentPos.Y - 1;
                             leftTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             leftTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(leftTop);
+                            gdMap.Children.Add(leftTop);
                             break;
                         case Compass.East:
                             refreshHorizontalLine();
                             currentPos.X = currentPos.X + 1;
                             horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(horizontalLine);
+                            gdMap.Children.Add(horizontalLine);
                             break;
                         case Compass.South:
                             refreshLeftBottom();
                             currentPos.Y = currentPos.Y + 1;
                             leftBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             leftBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(leftBottom);
+                            gdMap.Children.Add(leftBottom);
                             break;
                         case Compass.West:
                             refreshHorizontalLine();
                             currentPos.X = currentPos.X + 1;
                             horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(horizontalLine);
+                            gdMap.Children.Add(horizontalLine);
                             break;
                     }
                     _orientation = Compass.East;
@@ -313,28 +344,28 @@ namespace remote_inspection_unit_control
                             currentPos.Y = currentPos.Y + 1;
                             verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(verticalLine);
+                            gdMap.Children.Add(verticalLine);
                             break;
                         case Compass.East:
                             refreshRightTop();
                             currentPos.X = currentPos.X + 1;
                             rightTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             rightTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(rightTop);
+                            gdMap.Children.Add(rightTop);
                             break;
                         case Compass.South:
                             refreshVerticalLine();
                             currentPos.Y = currentPos.Y + 1;
                             verticalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             verticalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(verticalLine);
+                            gdMap.Children.Add(verticalLine);
                             break;
                         case Compass.West:
                             refreshLeftTop();
                             currentPos.X = currentPos.X - 1;
                             leftTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             leftTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(leftTop);
+                            gdMap.Children.Add(leftTop);
                             break;
                     }
                     _orientation = Compass.South;
@@ -348,34 +379,34 @@ namespace remote_inspection_unit_control
                             currentPos.Y = currentPos.Y - 1;
                             rightTop.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             rightTop.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(rightTop);
+                            gdMap.Children.Add(rightTop);
                             break;
                         case Compass.East:
                             refreshHorizontalLine();
                             currentPos.X = currentPos.X - 1;
                             horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(horizontalLine);
+                            gdMap.Children.Add(horizontalLine);
                             break;
                         case Compass.South:
                             refreshRightBottom();
                             currentPos.Y = currentPos.Y + 1;
                             rightBottom.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             rightBottom.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(rightBottom);
+                            gdMap.Children.Add(rightBottom);
                             break;
                         case Compass.West:
                             refreshHorizontalLine();
                             currentPos.X = currentPos.X - 1;
                             horizontalLine.SetValue(Grid.ColumnProperty, (int)currentPos.X);
                             horizontalLine.SetValue(Grid.RowProperty, (int)currentPos.Y);
-                            gdMapInner.Children.Add(horizontalLine);
+                            gdMap.Children.Add(horizontalLine);
                             break;
                     }
                     _orientation = Compass.West;
                     break;
             }
-            }
+        }
 
         private async void getDevices()
         {
@@ -408,9 +439,10 @@ namespace remote_inspection_unit_control
             btnSearch.IsEnabled = true;
         }
 
-        private void btnExitClick(object sender, System.Windows.RoutedEventArgs e)
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if(BluetoothHandler.Connected)
+ 	         base.OnClosing(e);
+             if(BluetoothHandler.Connected)
             {
                 if (MessageBox.Show("Drone is still connected, are you sure you want to exit? This will shutdown the drone.", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning)
                     == MessageBoxResult.Yes)
@@ -425,33 +457,11 @@ namespace remote_inspection_unit_control
             }
         }
 		
-		private void btnMinClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-    	  WindowState = WindowState.Minimized;
-        }
 		
-		private void btnMaxClick(object sender, System.Windows.RoutedEventArgs e)
-        {
-        	if(WindowState == WindowState.Normal)
-			{
-				WindowState = WindowState.Maximized;
-                _isMax = true;
-				btnMaximize.Content = "2";
-				btnMaximize.ToolTip = "Restore";
-			}
-			else
-			{
-				WindowState = WindowState.Normal;
-                _isMax = false;
-				btnMaximize.Content = "1";
-				btnMaximize.ToolTip = "Maximize";
-			}
-			
-        }
-
         private void btnManual_Click(object sender, RoutedEventArgs e)
         {
-       
+            
+
         }
         private void btnNorth_Click(object sender, RoutedEventArgs e)
         {
@@ -509,19 +519,14 @@ namespace remote_inspection_unit_control
             if (!_fullScreen)
             {
                 layoutRoot.Children.Remove(control);
-                this.Background = new SolidColorBrush(Colors.Black);
                 this.Content = control;
-                this.MaxHeight = 100000;
-                control.Margin = new Thickness(8);
-                this.WindowState = WindowState.Normal;
+                control.Margin = new Thickness(0);
                 this.WindowState = WindowState.Maximized;
             }
             else
             {
                 this.Content = layoutRoot;
                 layoutRoot.Children.Add(control);
-                this.Background = new SolidColorBrush(Colors.LightGray);
-                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
                 if (control.Name == "gdMapWrapper")
                 {
                     control.Margin = new Thickness(4, 0, 8, 0);
@@ -530,37 +535,11 @@ namespace remote_inspection_unit_control
                 {
                     control.Margin = new Thickness(8, 0, 4, 0);
                 }
-                if (!_isMax)
-                {
-                    this.WindowState = WindowState.Normal;
-                }
-                else
-                {
-                    this.WindowState = WindowState.Normal;
-                    this.WindowState = WindowState.Maximized;
-                }
+
+                this.WindowState = WindowState.Normal;
+
             }
             _fullScreen = !_fullScreen;
-        }
-
-        private void btnUp_Click(object sender, RoutedEventArgs e)
-        {
-            send("0150");
-        }
-
-        private void btnLeft_Click(object sender, RoutedEventArgs e)
-        {
-            send("1150");
-        }
-
-        private void btnRight_Click(object sender, RoutedEventArgs e)
-        {
-            send("2150");
-        }
-
-        private void btnDown_Click(object sender, RoutedEventArgs e)
-        {
-            send("3150");
         }
 
         private void send(string data)
@@ -578,25 +557,116 @@ namespace remote_inspection_unit_control
             BluetoothHandler.disconnect();
             cbxDeviceList.Text = "-- Select Device --";
             lblConStatus.Content = "Disconnected";
-            lblConStatus.Foreground = new SolidColorBrush(Colors.Red);
+            lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
         }
 
         private async void getData()
         {
             string data;
-            if (BluetoothHandler.Connected)
-            {
                 while (true)
                 {
-                    data = await BluetoothHandler.receive();
-                    lstLogList.Items.Add(data);
+                    try
+                    {
+                        if (BluetoothHandler.Connected)
+                        {
+                            data = await BluetoothHandler.receive();
+                            lstLogList.Items.Add(data);
+                        }
+                    }
+                    catch(ObjectDisposedException)
+                    {
+                        break;
+                    }
                 }
-            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             getDevices();
         }
+
+ 
+        private void btnUp_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            send(FORWARD);
+        }
+
+        private void btnUp_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            send(STOP);
+        }
+
+        private void btnRight_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            send(RIGHT);
+        }
+
+        private void btnRight_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            send(STOP);
+        }
+
+        private void btnDown_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            send(BACKWARD);
+        }
+
+        private void btnDown_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            send(STOP);
+        }
+
+        private void btnLeft_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            send(LEFT);
+        }
+
+        private void btnLeft_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            send(STOP);
+        }
+
+        private void layoutRoot_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    send(FORWARD);
+                    break;
+                case Key.Down:
+                    send(BACKWARD);
+                    break;
+                case Key.Left:
+                    send(LEFT);
+                    break;
+                case Key.Right:
+                    send(RIGHT);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void layoutRoot_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    send(STOP);
+                    break;
+                case Key.Down:
+                    send(STOP);
+                    break;
+                case Key.Left:
+                    send(STOP);
+                    break;
+                case Key.Right:
+                    send(STOP);
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 }

@@ -133,16 +133,6 @@ D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ko\Mic
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ru\Microsoft.Expression.Interactions.resources.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\Microsoft.Expression.Interactions.resources.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\Microsoft.Expression.Interactions.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\de\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\en\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\es\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\it\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\ru\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csprojResolveAssemblyReference.cache
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\MainWindow.baml
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\themes\Light.baml
@@ -155,3 +145,6 @@ D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.csproj.GenerateResource.Cache
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.exe
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\remote_inspection_unit_control.pdb
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\themes\Dark.baml
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\MahApps.Metro.dll
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\MahApps.Metro.xml
