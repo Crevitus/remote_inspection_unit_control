@@ -4,8 +4,8 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Remote Inspection Unit"
         x:Name="mainWindow"
-        MinHeight="500"
-        MinWidth="700"
+        MinHeight="700"
+        MinWidth="900"
 	    Height="700" 
 	    Width="900"
 	    WindowStartupLocation="CenterScreen" 
@@ -17,10 +17,10 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="auto" Width="auto" HorizontalAlignment="Right" Grid.Row="1">
-                <Button x:Name="btnDisconnect" Content="Disconnect" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click" />
-                <Label x:Name="lblConStatus" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Foreground="Black"/>
-                <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- No Devices --" FontFamily="Microsoft JhengHei UI Light" FontSize="14" Width="195" Margin="0,0,0,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" DropDownClosed="cbxDeviceList_DropDownClosed"/>
-                <Button x:Name="btnSearch" Content="Search" Style="{StaticResource basicButton}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75"  Margin="4,0,0,0"  Click="btnSearch_Click"/>
+                <Button x:Name="btnDisconnect" Content="Disconnect"  HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click" Cursor="Hand" />
+                <Label x:Name="lblConStatus" Margin="10,0,10,0" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Segoe UI" FontSize="12" Foreground="Black"/>
+                <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- No Devices --" FontFamily="Segoe UI" FontSize="14" Width="195" Margin="0,0,0,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" DropDownClosed="cbxDeviceList_DropDownClosed" Background="{x:Null}" Foreground="#FFF1EEEE" />
+                <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75"  Margin="4,0,0,0"  Click="btnSearch_Click" Cursor="Hand"/>
             </StackPanel>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -47,7 +47,7 @@
         <Label Content="Map View" Style="{StaticResource basicLabel}" HorizontalAlignment="Center"  Grid.Row="0" VerticalAlignment="Center" Height="auto" Width="auto" Grid.Column="1"/>
 
         <!-- row 1 items -->
-        <Grid x:Name="gdMapWrapper" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
+        <Grid x:Name="gdMapWrapper" Grid.Row="1" Background="#FF2F5A7F" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
             <Image x:Name="map" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseMove="map_PreviewMouseMove" PreviewMouseUp="map_PreviewMouseUp" MouseLeave="map_MouseLeave"/>
             <Button x:Name="btnMapFullScreen" Style="{StaticResource basicButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
         </Grid>
@@ -61,7 +61,7 @@
         <Button Content="Capture" Style="{StaticResource basicButton}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="22" Margin="10,7,0,0"/>
 
         <!-- row 2 items -->
-        <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,8"/>
+        <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,15"/>
         <!-- controls -->
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="3">
 

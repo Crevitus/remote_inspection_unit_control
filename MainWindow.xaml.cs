@@ -40,6 +40,7 @@ namespace remote_inspection_unit_control
             getDevices();
         }
 
+        //sets map dimensions after layout pass
         private void initialiseMap()
         {
             if (!_init)
@@ -50,6 +51,8 @@ namespace remote_inspection_unit_control
                 _init = true;
             }
         }
+
+        //get available bluetooth devices
         private async void getDevices()
         {
             btnSearch.IsEnabled = false;
@@ -81,6 +84,7 @@ namespace remote_inspection_unit_control
             btnSearch.IsEnabled = true;
         }
 
+        //
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
  	         base.OnClosing(e);

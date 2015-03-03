@@ -12,7 +12,7 @@ namespace remote_inspection_unit_control
         private List<Pipe> mMapData = new List<Pipe>();
         private Point mStart = new Point(0, 0);
         private Bitmap mImage;
-        private double mSize = 20;
+        private double mSize = 15;
 
         public Map(Bitmap b)
         {
