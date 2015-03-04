@@ -98,12 +98,12 @@ namespace remote_inspection_unit_control
             {
                 byte[] buffer = new byte[2048]; // read in chunks of 2KB
                 int bytesRead;
-                while ((bytesRead = await _bluetoothStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                if((bytesRead = await _bluetoothStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     stream.Write(buffer, 0, bytesRead);
+                    byte[] result = stream.ToArray();
+                    data = System.Text.Encoding.Default.GetString(result);
                 }
-                byte[] result = stream.ToArray();
-                data = System.Text.Encoding.Default.GetString(result);
             }
             return data;
         }

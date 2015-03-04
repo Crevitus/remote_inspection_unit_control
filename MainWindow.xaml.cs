@@ -90,7 +90,7 @@ namespace remote_inspection_unit_control
  	         base.OnClosing(e);
              if(BluetoothHandler.Connected)
             {
-                if (MessageBox.Show("Drone is still connected, are you sure you want to exit? This will shutdown the drone.", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+                if (MessageBox.Show("Drone is still connected, are you sure you want to exit? This will shutdown the drone.", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
                     == MessageBoxResult.Yes)
                 {
                     BluetoothHandler.send("exit");
