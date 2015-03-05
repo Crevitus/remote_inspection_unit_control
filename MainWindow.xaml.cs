@@ -186,10 +186,11 @@ namespace remote_inspection_unit_control
         {
             if (mDown)
             {
+                int tol = 30;
                 int xDif = (int)(mPosX - e.GetPosition(this).X);
                 int yDif = (int)(mPosY - e.GetPosition(this).Y);
-                if (xDif < 30 && xDif > -30 &&
-                    yDif < 30 && yDif > -30) return;
+                if (xDif < tol && xDif > -tol &&
+                    yDif < tol && yDif > -tol) return;
 
                 if (xDif > yDif)
                 {
