@@ -126,7 +126,9 @@
             <Button Content="East" x:Name="btnEast" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnEast_Click"/>
             <Button Content="South" x:Name="btnSouth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnSouth_Click"/>
             <Button Content="West" x:Name="btnWest" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnWest_Click" RenderTransformOrigin="-0.587,5.291"/>
-            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,70,20,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnManual_Click"/>
+            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,20.4,0" VerticalAlignment="Top" Width="75" Height="22"/>
+            <Button Content="Zoom In" x:Name="btnZoomIn" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomIn_Click"/>
+            <Button Content="Zoom Out" x:Name="btnZoomOut" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomOut_Click"/>
         </Grid>
 
     </Grid>

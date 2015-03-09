@@ -30,7 +30,7 @@ namespace remote_inspection_unit_control
         private int mPosX = 0, mPosY = 0;
         private System.Drawing.Point mMapPos = new System.Drawing.Point(0, 0);
         private int mPrev = -1;
-        Bitmap mImage;
+        private Bitmap mImage;
         private readonly string FORWARD = "450", LEFT = "350", RIGHT = "250", BACKWARD = "150", STOP = "0";
 
         public MainWindow()
@@ -101,13 +101,6 @@ namespace remote_inspection_unit_control
             {
                 Application.Current.Shutdown();
             }
-        }
-		
-		
-        private void btnManual_Click(object sender, RoutedEventArgs e)
-        {
-            
-
         }
 
         private void btnNorth_Click(object sender, RoutedEventArgs e)
@@ -291,7 +284,7 @@ namespace remote_inspection_unit_control
             if(!BluetoothHandler.send(data))
             {
                 lblConStatus.Content = "Disconnected";
-                lblConStatus.Foreground = new SolidColorBrush(Colors.Red);
+                lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
                 btnDisconnect.IsEnabled = false;
             }
         }
@@ -301,6 +294,7 @@ namespace remote_inspection_unit_control
             BluetoothHandler.disconnect();
             cbxDeviceList.Text = "-- Select Device --";
             lblConStatus.Content = "Disconnected";
+            btnDisconnect.IsEnabled = false;
             lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
         }
 
@@ -410,6 +404,18 @@ namespace remote_inspection_unit_control
                 default:
                     break;
             }
+        }
+
+        private void btnZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            mMap.Size -= 1;
+            refresh();
+        }
+
+        private void btnZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            mMap.Size += 1;
+            refresh();
         }
 
     }

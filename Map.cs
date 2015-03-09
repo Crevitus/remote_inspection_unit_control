@@ -12,13 +12,15 @@ namespace remote_inspection_unit_control
         private List<Pipe> mMapData = new List<Pipe>();
         private Point mStart = new Point(0, 0);//top left of map
         private Bitmap mImage;
-        private double mSize = 10;//zoom
+        private double mZoom = 10;//zoom
         Pen mPen = new Pen(Color.Black, 5);//line color and size
         Color mBackgroundColor = Color.FromArgb(47, 90, 127);
 
         public Map(Bitmap b)
         {
             mImage = b;
+            mStart.X = mStart.X - (int)(mZoom / 2);
+            mStart.Y = mStart.Y - (int)(mZoom / 2);
         }
 
         public Point StartLoc
@@ -37,13 +39,13 @@ namespace remote_inspection_unit_control
         {
             get
             {
-                return mSize;
+                return mZoom;
             }
             set
             {
                 if (value > 0)
                 {
-                    mSize = value;
+                    mZoom = value;
                 }
             }
         }
@@ -51,23 +53,37 @@ namespace remote_inspection_unit_control
         public void add(Point p, bool[] dir)
         {
             mMapData.Add(new Pipe(p, dir));
-            //centre map on added pipe
-            mStart.X = mStart.X - (mStart.X - p.X) - (int)(mSize/2);
-            mStart.Y = mStart.Y - (mStart.Y - p.Y) - (int)(mSize/2);
+            //centre map on added pipe when end of edge
+            if (p.X < mStart.X)
+            {
+                mStart.X = mStart.X - (mStart.X - p.X) - (int)(mZoom / 2);//west
+            }
+            else if (p.Y < mStart.Y)
+            {
+                mStart.Y = mStart.Y - (mStart.Y - p.Y) - (int)(mZoom / 2);//north
+            }
+            else if (p.X >= mZoom + mStart.X)
+            {
+                mStart.X = mStart.X - (mStart.X - p.X) - (int)(mZoom / 2);//east
+            }
+            else if (p.Y >= mZoom + mStart.Y)
+            {
+                mStart.Y = mStart.Y - (mStart.Y - p.Y) - (int)(mZoom / 2);//south
+            }
         }
 
         public void draw()
         {
-            int perSizeX = (int)Math.Ceiling(mImage.Width / mSize);
-            int perSizeY = (int)Math.Ceiling(mImage.Height / mSize);
+            int perSizeX = (int)Math.Ceiling(mImage.Width / mZoom);
+            int perSizeY = (int)Math.Ceiling(mImage.Height / mZoom);
             using (Graphics g = Graphics.FromImage(mImage))
             {
                 g.Clear(mBackgroundColor);
             }
             foreach (Pipe p in mMapData)
             {
-                if (p.Position.X - mStart.X >= 0 && p.Position.X - mStart.X < mSize &&
-                    p.Position.Y - mStart.Y >= 0 && p.Position.Y - mStart.Y < mSize)
+                if (p.Position.X - mStart.X >= 0 && p.Position.X - mStart.X < mZoom &&
+                    p.Position.Y - mStart.Y >= 0 && p.Position.Y - mStart.Y < mZoom)
                 {
                     int x = (int)Math.Ceiling((double)(p.Position.X + 1 - mStart.X) * perSizeX - perSizeX / 2);
                     int y = (int)Math.Ceiling((double)(p.Position.Y + 1 - mStart.Y) * perSizeY - perSizeY / 2);
