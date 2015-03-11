@@ -31,7 +31,8 @@ namespace remote_inspection_unit_control
         private System.Drawing.Point mMapPos = new System.Drawing.Point(0, 0);
         private int mPrev = -1;
         private Bitmap mImage;
-        private readonly string FORWARD = "450", LEFT = "350", RIGHT = "250", BACKWARD = "150", STOP = "0";
+        private readonly string FORWARD = "150", LEFT = "250", RIGHT = "350", BACKWARD = "450", STOP = "0";
+        private bool mBlocking = false;
 
         public MainWindow()
         {
@@ -326,62 +327,89 @@ namespace remote_inspection_unit_control
  
         private void btnUp_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            send(FORWARD);
+            if (!mBlocking)
+            {
+                mBlocking = true;
+                send(FORWARD);
+            }
         }
 
         private void btnUp_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            mBlocking = false;
             send(STOP);
         }
 
         private void btnRight_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            send(RIGHT);
+            if (!mBlocking)
+            {
+                mBlocking = true;
+                send(RIGHT);
+            }
         }
 
         private void btnRight_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            mBlocking = false;
             send(STOP);
         }
 
         private void btnDown_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            send(BACKWARD);
+            if (!mBlocking)
+            {
+                mBlocking = true;
+                send(BACKWARD);
+            }
         }
 
         private void btnDown_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            mBlocking = false;
             send(STOP);
         }
 
         private void btnLeft_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            send(LEFT);
+            if (!mBlocking)
+            {
+                mBlocking = true;
+                send(LEFT);
+            }
         }
 
         private void btnLeft_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            mBlocking = false;
             send(STOP);
         }
 
         private void layoutRoot_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
+            if (!mBlocking)
             {
-                case Key.Up:
-                    send(FORWARD);
-                    break;
-                case Key.Down:
-                    send(BACKWARD);
-                    break;
-                case Key.Left:
-                    send(LEFT);
-                    break;
-                case Key.Right:
-                    send(RIGHT);
-                    break;
-                default:
-                    break;
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        mBlocking = true;
+                        send(FORWARD);
+                        break;
+                    case Key.Down:
+                        mBlocking = true;
+                        send(BACKWARD);
+                        break;
+                    case Key.Left:
+                        mBlocking = true;
+                        send(LEFT);
+                        break;
+                    case Key.Right:
+                        mBlocking = true;
+                        send(RIGHT);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -404,6 +432,7 @@ namespace remote_inspection_unit_control
                 default:
                     break;
             }
+            mBlocking = false;
         }
 
         private void btnZoomIn_Click(object sender, RoutedEventArgs e)

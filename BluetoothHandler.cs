@@ -81,6 +81,7 @@ namespace remote_inspection_unit_control
                 // write the data in the stream
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
                 _bluetoothStream.Write(buffer, 0, buffer.Length);
+                //System.Threading.Thread.Sleep(5);
                 _bluetoothStream.Flush();
                 return true;
             }
