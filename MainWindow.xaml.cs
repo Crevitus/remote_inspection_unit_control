@@ -41,19 +41,7 @@ namespace remote_inspection_unit_control
             getDevices();
         }
 
-        //sets map dimensions after layout pass
-        private void initialiseMap()
-        {
-            if (!_init)
-            {
-                mImage = new Bitmap((int)gdMapWrapper.ActualWidth, (int)gdMapWrapper.ActualHeight);
-                mMap = new Map(mImage);
-                refresh();
-                _init = true;
-            }
-        }
-
-        //get available bluetooth devices
+        //get available remote inspection devices
         private async void getDevices()
         {
             btnSearch.IsEnabled = false;
@@ -77,10 +65,11 @@ namespace remote_inspection_unit_control
                     cbxDeviceList.Text = "-- No Devices --";
                 }
             }
-            catch (System.PlatformNotSupportedException)
+            catch (Exception)
             {
-                MessageBox.Show("Please make sure that your hardware is supported and bluetooth is switched on.",
-                "Bluetooth Search Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please make sure that WiFi is switch on.",
+                "Device Search Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                cbxDeviceList.Text = "-- No Devices --";
             }
             btnSearch.IsEnabled = true;
         }
@@ -88,8 +77,8 @@ namespace remote_inspection_unit_control
         //
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
- 	         base.OnClosing(e);
-             if(ConnectionHandler.Connected)
+            base.OnClosing(e);
+            if (ConnectionHandler.Connected)
             {
                 if (MessageBox.Show("Drone is still connected, are you sure you want to exit? This will shutdown the drone.", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
                     == MessageBoxResult.Yes)
@@ -101,6 +90,98 @@ namespace remote_inspection_unit_control
             else
             {
                 Application.Current.Shutdown();
+            }
+        }
+
+        private async void cbxDeviceList_DropDownClosed(object sender, EventArgs e)
+        {
+            if (cbxDeviceList.SelectedItem != null)
+            {
+                string device = cbxDeviceList.SelectedItem.ToString();
+                if ((await ConnectionHandler.selectDevice(device)))
+                {
+                    ConnectionHandler.receive(true);
+                    lblConStatus.Content = "Connected";
+                    lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
+                    btnDisconnect.IsEnabled = true;
+                }
+                else
+                {
+                    cbxDeviceList.Text = "-- Select Device --";
+                }
+            }
+        }
+
+        private void send(string data)
+        {
+            if (!ConnectionHandler.send(data))
+            {
+                lblConStatus.Content = "Disconnected";
+                lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
+                btnDisconnect.IsEnabled = false;
+            }
+        }
+
+        private void btnDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            ConnectionHandler.disconnect();
+            cbxDeviceList.Text = "-- Select Device --";
+            lblConStatus.Content = "Disconnected";
+            btnDisconnect.IsEnabled = false;
+            lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            getDevices();
+        }
+
+        private void btnMediaFullScreen_Click(object sender, RoutedEventArgs e)
+        {
+            fullScreen(gdMediaWrapper);
+        }
+        private void btnMapFullScreen_Click(object sender, RoutedEventArgs e)
+        {
+            fullScreen(gdMapWrapper);
+        }
+
+        private void fullScreen(Grid control)
+        {
+            if (!_fullScreen)
+            {
+                layoutRoot.Children.Remove(control);
+                this.Content = control;
+                control.Margin = new Thickness(0);
+                this.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                this.Content = layoutRoot;
+                layoutRoot.Children.Add(control);
+                if (control.Name == "gdMapWrapper")
+                {
+                    control.Margin = new Thickness(4, 0, 8, 0);
+                }
+                else
+                {
+                    control.Margin = new Thickness(8, 0, 4, 0);
+                }
+
+                this.WindowState = WindowState.Normal;
+
+            }
+            _fullScreen = !_fullScreen;
+        }
+
+        //sets map dimensions after layout pass
+        private void initialiseMap()
+        {
+            if (!_init)
+            {
+                mImage = new Bitmap((int)gdMapWrapper.ActualWidth, (int)gdMapWrapper.ActualHeight);
+                mMap = new Map(mImage);
+                refresh();
+                _init = true;
             }
         }
 
@@ -224,107 +305,6 @@ namespace remote_inspection_unit_control
             mDown = false;
         }
 
-        private async void  cbxDeviceList_DropDownClosed(object sender, EventArgs e)
-        {
-            if (cbxDeviceList.SelectedItem != null)
-            {
-                string device = cbxDeviceList.SelectedItem.ToString();
-                if ((await ConnectionHandler.selectDevice(device)))
-                {
-                    getData();
-                    lblConStatus.Content = "Connected";
-                    lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    btnDisconnect.IsEnabled = true;
-                }
-                else
-                {
-                    cbxDeviceList.Text = "-- Select Device --";
-                }
-            }
-        }
-
-        private void btnMediaFullScreen_Click(object sender, RoutedEventArgs e)
-        {
-            fullScreen(gdMediaWrapper);
-        }
-        private void btnMapFullScreen_Click(object sender, RoutedEventArgs e)
-        {
-            fullScreen(gdMapWrapper);
-        }
-
-        private void fullScreen(Grid control)
-        {
-            if (!_fullScreen)
-            {
-                layoutRoot.Children.Remove(control);
-                this.Content = control;
-                control.Margin = new Thickness(0);
-                this.WindowState = WindowState.Maximized;
-            }
-            else
-            {
-                this.Content = layoutRoot;
-                layoutRoot.Children.Add(control);
-                if (control.Name == "gdMapWrapper")
-                {
-                    control.Margin = new Thickness(4, 0, 8, 0);
-                }
-                else
-                {
-                    control.Margin = new Thickness(8, 0, 4, 0);
-                }
-
-                this.WindowState = WindowState.Normal;
-
-            }
-            _fullScreen = !_fullScreen;
-        }
-
-        private void send(string data)
-        {
-            if(!ConnectionHandler.send(data))
-            {
-                lblConStatus.Content = "Disconnected";
-                lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
-                btnDisconnect.IsEnabled = false;
-            }
-        }
-
-        private void btnDisconnect_Click(object sender, RoutedEventArgs e)
-        {
-            ConnectionHandler.disconnect();
-            cbxDeviceList.Text = "-- Select Device --";
-            lblConStatus.Content = "Disconnected";
-            btnDisconnect.IsEnabled = false;
-            lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
-        }
-
-        private async void getData()
-        {
-            string data;
-                while (true)
-                {
-                    try
-                    {
-                        if (ConnectionHandler.Connected)
-                        {
-                            //data = await ConnectionHandler.receive();
-                            //lstLogList.Items.Add(data);
-                        }
-                    }
-                    catch(ObjectDisposedException)
-                    {
-                        break;
-                    }
-                }
-        }
-
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            getDevices();
-        }
-
- 
         private void btnUp_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!mBlocking)

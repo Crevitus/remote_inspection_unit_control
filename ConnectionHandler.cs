@@ -50,22 +50,22 @@ namespace remote_inspection_unit_control
         public static async Task<List<String>> discoverAsync()
         {
             List<String> items = new List<string> { };
-            int count = 1;
             _devicesInfo = new Dictionary<string,Wlan.WlanAvailableNetwork>{};
             _wifiClient = new WlanClient();
-            foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
-            {
-                Wlan.WlanAvailableNetwork[] networks = await Task.Run(() =>  wlanIface.GetAvailableNetworkList(0));
-                foreach (Wlan.WlanAvailableNetwork network in networks)
+                foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
                 {
-                    if (GetStringForSSID(network.dot11Ssid ) == "RaspAP" && !_devicesInfo.ContainsKey("RaspAP"))
+                    Wlan.WlanAvailableNetwork[] networks = await Task.Run(() => wlanIface.GetAvailableNetworkList(0));
+                    foreach (Wlan.WlanAvailableNetwork network in networks)
                     {
-                        items.Add(GetStringForSSID(network.dot11Ssid));
-                        _devicesInfo.Add(GetStringForSSID(network.dot11Ssid), network);
-                        count++;
+                        if (GetStringForSSID(network.dot11Ssid).StartsWith("RaspAP") && !_devicesInfo.ContainsKey(GetStringForSSID(network.dot11Ssid)))
+                        {
+                            items.Add(GetStringForSSID(network.dot11Ssid));
+                            _devicesInfo.Add(GetStringForSSID(network.dot11Ssid), network);
+
+                        }
                     }
                 }
-            }
+            
             return items;
         }
 
@@ -74,6 +74,7 @@ namespace remote_inspection_unit_control
             if (_dataStream != null)
             {
                 _dataStream.Close();
+                _tcpClient.Close();
             }
 
             _selectedDevice = _devicesInfo[device];
@@ -121,8 +122,6 @@ namespace remote_inspection_unit_control
         public static async void receive(bool running)
         {
             string message = "";
-            Image image;
-            MainWindow main = new MainWindow();
             while (running)
             {
                 try
@@ -137,22 +136,14 @@ namespace remote_inspection_unit_control
                             {
                                 stream.Write(buffer, 0, bytesRead);
                                 byte[] result = stream.ToArray();
-                                switch (result[0])
+                                if (result[0] == 0 || result[0] == 1)
                                 {
-                                    case 0:
-                                        message = System.Text.Encoding.Default.GetString(result);
-                                        main.lstLogList.Items.Add(message);
-                                        break;
-                                    case 1:
-                                        break;
-                                    case 2:
-                                        image = Image.FromStream(stream);
-                                        break;
+                                    message = System.Text.Encoding.Default.GetString(result);
                                 }
                             }
-                        }
-                    }
-                }
+                        } // end using
+                    } //end connection check
+                } //end try
                 catch (ObjectDisposedException)
                 {
                     break;
