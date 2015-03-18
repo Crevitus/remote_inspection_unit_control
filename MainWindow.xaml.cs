@@ -62,7 +62,7 @@ namespace remote_inspection_unit_control
                 cbxDeviceList.Items.Clear();
                 cbxDeviceList.Text = "-- Searching --";
                 List<string> items = new List<string> { };
-                List<string> _devicesInfo = await BluetoothHandler.discoverAsync();
+                List<string> _devicesInfo = await ConnectionHandler.discoverAsync();
 
                 if (_devicesInfo.Count > 0)
                 {
@@ -89,12 +89,12 @@ namespace remote_inspection_unit_control
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
  	         base.OnClosing(e);
-             if(BluetoothHandler.Connected)
+             if(ConnectionHandler.Connected)
             {
                 if (MessageBox.Show("Drone is still connected, are you sure you want to exit? This will shutdown the drone.", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
                     == MessageBoxResult.Yes)
                 {
-                    BluetoothHandler.send("exit");
+                    ConnectionHandler.send("exit");
                     Application.Current.Shutdown();
                 }
             }
@@ -224,12 +224,12 @@ namespace remote_inspection_unit_control
             mDown = false;
         }
 
-        private void cbxDeviceList_DropDownClosed(object sender, EventArgs e)
+        private async void  cbxDeviceList_DropDownClosed(object sender, EventArgs e)
         {
             if (cbxDeviceList.SelectedItem != null)
             {
                 string device = cbxDeviceList.SelectedItem.ToString();
-                if (BluetoothHandler.selectDevice(device))
+                if ((await ConnectionHandler.selectDevice(device)))
                 {
                     getData();
                     lblConStatus.Content = "Connected";
@@ -282,7 +282,7 @@ namespace remote_inspection_unit_control
 
         private void send(string data)
         {
-            if(!BluetoothHandler.send(data))
+            if(!ConnectionHandler.send(data))
             {
                 lblConStatus.Content = "Disconnected";
                 lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
@@ -292,7 +292,7 @@ namespace remote_inspection_unit_control
 
         private void btnDisconnect_Click(object sender, RoutedEventArgs e)
         {
-            BluetoothHandler.disconnect();
+            ConnectionHandler.disconnect();
             cbxDeviceList.Text = "-- Select Device --";
             lblConStatus.Content = "Disconnected";
             btnDisconnect.IsEnabled = false;
@@ -306,10 +306,10 @@ namespace remote_inspection_unit_control
                 {
                     try
                     {
-                        if (BluetoothHandler.Connected)
+                        if (ConnectionHandler.Connected)
                         {
-                            data = await BluetoothHandler.receive();
-                            lstLogList.Items.Add(data);
+                            //data = await ConnectionHandler.receive();
+                            //lstLogList.Items.Add(data);
                         }
                     }
                     catch(ObjectDisposedException)
