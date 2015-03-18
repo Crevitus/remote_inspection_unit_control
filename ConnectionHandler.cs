@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InTheHand;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Ports;
-using InTheHand.Net.Sockets;
-using InTheHand.Net;
 using System.Windows;
 using System.Net.Sockets;
 using System.IO;
@@ -22,7 +17,7 @@ namespace remote_inspection_unit_control
     {
         private static Dictionary<string, Wlan.WlanAvailableNetwork> _devicesInfo;
         private static Wlan.WlanAvailableNetwork _selectedDevice;
-        private static TcpClient _tcpClient;
+        private static TcpClient _tcpClient = new TcpClient();
         private static NetworkStream _dataStream;
         private static WlanClient _wifiClient;
         private static bool _connected = false;

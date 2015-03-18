@@ -105,12 +105,10 @@ C:\Users\Liam\Documents\GitHub\remote_inspection_unit_control\obj\Debug\remote_i
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe.config
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.exe
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\remote_inspection_unit_control.pdb
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\InTheHand.Net.Personal.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Expression.Effects.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Expression.Interactions.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\System.Windows.Interactivity.dll
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\InTheHand.Net.Personal.xml
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\bin\Debug\de\Microsoft.Expression.Effects.resources.dll
