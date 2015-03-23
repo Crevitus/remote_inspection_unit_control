@@ -67,7 +67,7 @@ namespace remote_inspection_unit_control
             }
             catch (System.ComponentModel.Win32Exception)
             {
-                MessageBox.Show("Please make sure that WiFi is switch on.",
+                MessageBox.Show("Please make sure that WiFi is switched on.",
                 "Device Search Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 cbxDeviceList.Text = "-- No Devices --";
             }

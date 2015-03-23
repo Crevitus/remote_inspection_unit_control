@@ -23,7 +23,7 @@ namespace remote_inspection_unit_control
         private static bool _connected = false;
         private static bool _receive = false;
         private static readonly string IP = "192.168.42.1";
-        private static readonly int PORT = 6756;
+        private static readonly int PORT = 6758;
         private static readonly string KEY = "raspberry";
         private static readonly int RETRYS = 10;
 
