@@ -21,19 +21,27 @@ namespace remote_inspection_unit_control
         private static NetworkStream _dataStream;
         private static WlanClient _wifiClient;
         private static bool _connected = false;
-        private static readonly string IP = "10.0.0.1";
+        private static bool _receive = false;
+        private static readonly string IP = "192.168.42.1";
         private static readonly int PORT = 6756;
-        private static readonly string KEY = "raspberrypeh";
+        private static readonly string KEY = "raspberry";
+        private static readonly int RETRYS = 10;
 
         public static bool Connected
         {
             get { return _connected; }
         }
+
+        public static bool Receive
+        {
+            set { _receive = value; }
+        }
+
         public static void disconnect()
         {
             _dataStream.Dispose();
             _tcpClient.Close();
-            receive(false);
+            _receive = false;
             _connected = false;
         }
 
@@ -45,22 +53,22 @@ namespace remote_inspection_unit_control
         public static async Task<List<String>> discoverAsync()
         {
             List<String> items = new List<string> { };
-            _devicesInfo = new Dictionary<string,Wlan.WlanAvailableNetwork>{};
+            _devicesInfo = new Dictionary<string, Wlan.WlanAvailableNetwork> { };
             _wifiClient = new WlanClient();
-                foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
+            foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
+            {
+                Wlan.WlanAvailableNetwork[] networks = await Task.Run(() => wlanIface.GetAvailableNetworkList(0));
+                foreach (Wlan.WlanAvailableNetwork network in networks)
                 {
-                    Wlan.WlanAvailableNetwork[] networks = await Task.Run(() => wlanIface.GetAvailableNetworkList(0));
-                    foreach (Wlan.WlanAvailableNetwork network in networks)
+                    if (GetStringForSSID(network.dot11Ssid).StartsWith("RaspAP") && !_devicesInfo.ContainsKey(GetStringForSSID(network.dot11Ssid)))
                     {
-                        if (GetStringForSSID(network.dot11Ssid).StartsWith("RaspAP") && !_devicesInfo.ContainsKey(GetStringForSSID(network.dot11Ssid)))
-                        {
-                            items.Add(GetStringForSSID(network.dot11Ssid));
-                            _devicesInfo.Add(GetStringForSSID(network.dot11Ssid), network);
+                        items.Add(GetStringForSSID(network.dot11Ssid));
+                        _devicesInfo.Add(GetStringForSSID(network.dot11Ssid), network);
 
-                        }
                     }
                 }
-            
+            }
+
             return items;
         }
 
@@ -73,27 +81,38 @@ namespace remote_inspection_unit_control
             }
 
             _selectedDevice = _devicesInfo[device];
-            try
+            foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
             {
-                foreach (WlanClient.WlanInterface wlanIface in _wifiClient.Interfaces)
+                _tcpClient = new TcpClient();
+                // connecting
+                _selectedDevice = _devicesInfo[device];
+                string profileXml = string.Format("<?xml version=\"1.0\" encoding=\"US-ASCII\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>false</protected><keyMaterial>{1}</keyMaterial></sharedKey></security></MSM></WLANProfile>", _selectedDevice.profileName, KEY);
+                wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
+                wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, _selectedDevice.profileName);
+                for (int i = 0; i < RETRYS; i++)
                 {
-                    _tcpClient = new TcpClient();
-                    // connecting
-                    _selectedDevice = _devicesInfo[device];
-                    string profileXml = string.Format("<?xml version=\"1.0\" encoding=\"US-ASCII\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>false</protected><keyMaterial>{1}</keyMaterial></sharedKey></security></MSM></WLANProfile>", _selectedDevice.profileName, KEY);
-                    wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
-                    wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, _selectedDevice.profileName);
-                    System.Threading.Thread.Sleep(1000);
-                    await _tcpClient.ConnectAsync(IP, PORT);
+                    try
+                    {
+                        await _tcpClient.ConnectAsync(IP, PORT);
+                        _connected = true;
+                        break;
+                    }
+                    catch (SocketException)
+                    {
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                }
+                if (_connected)
+                {
                     _dataStream = _tcpClient.GetStream();
-                    _connected = true;
+                }
+                else
+                {
+                    MessageBox.Show("Could not connect to device.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _connected = false;
                 }
             }
-            catch (SocketException)
-            {
-                _connected = false;
-                MessageBox.Show("Could not connect to device.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
             return _connected;
         }
 
@@ -114,10 +133,9 @@ namespace remote_inspection_unit_control
             }
         }
 
-        public static async void receive(bool running)
+        public static async void receive(IDataHandler reference)
         {
-            string message = "";
-            while (running)
+            while (_receive)
             {
                 try
                 {
@@ -131,15 +149,16 @@ namespace remote_inspection_unit_control
                             {
                                 stream.Write(buffer, 0, bytesRead);
                                 byte[] result = stream.ToArray();
-                                if (result[0] == 0 || result[0] == 1)
-                                {
-                                    message = System.Text.Encoding.Default.GetString(result);
-                                }
+                                reference.dataHandler(result);
                             }
                         } // end using
                     } //end connection check
                 } //end try
                 catch (ObjectDisposedException)
+                {
+                    break;
+                }
+                catch (IOException)
                 {
                     break;
                 }

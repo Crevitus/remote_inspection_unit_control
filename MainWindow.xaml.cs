@@ -21,7 +21,7 @@ namespace remote_inspection_unit_control
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, IDataHandler
     {
         private bool _fullScreen = false;
         private bool _init = false;
@@ -65,7 +65,7 @@ namespace remote_inspection_unit_control
                     cbxDeviceList.Text = "-- No Devices --";
                 }
             }
-            catch (Exception)
+            catch (System.ComponentModel.Win32Exception)
             {
                 MessageBox.Show("Please make sure that WiFi is switch on.",
                 "Device Search Failed", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -84,12 +84,11 @@ namespace remote_inspection_unit_control
                     == MessageBoxResult.Yes)
                 {
                     ConnectionHandler.send("exit");
-                    Application.Current.Shutdown();
                 }
-            }
-            else
-            {
-                Application.Current.Shutdown();
+                else
+                {
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -100,7 +99,8 @@ namespace remote_inspection_unit_control
                 string device = cbxDeviceList.SelectedItem.ToString();
                 if ((await ConnectionHandler.selectDevice(device)))
                 {
-                    ConnectionHandler.receive(true);
+                    ConnectionHandler.Receive = true;
+                    ConnectionHandler.receive(this);
                     lblConStatus.Content = "Connected";
                     lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
                     btnDisconnect.IsEnabled = true;
@@ -134,6 +134,22 @@ namespace remote_inspection_unit_control
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             getDevices();
+        }
+
+        public void dataHandler(byte[] data)
+        {
+            switch(data[0])
+            {
+                case 1:
+                    //TODO map command
+                    break;
+                case 2:
+                    //TODO camera stuff
+                    break;
+                default:
+                    lstLogList.Items.Add(data);
+                    break;
+            }
         }
 
         private void btnMediaFullScreen_Click(object sender, RoutedEventArgs e)

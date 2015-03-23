@@ -4,7 +4,7 @@
 winexe
 C#
 .cs
-D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\Debug\
+D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\obj\x86\Debug\
 remote_inspection_unit_control
 none
 false
@@ -12,8 +12,8 @@ DEBUG;TRACE
 D:\Documents\Google Drive\GitHub\remote_inspection_unit_control\App.xaml
 3-1269618796
 
-9835071028
-20-275433351
+101826721361
+21-724647884
 MainWindow.xaml;themes\Dark.xaml;themes\Light.xaml;
 
 False
