@@ -24,6 +24,7 @@ namespace remote_inspection_unit_control
     public partial class MainWindow : MetroWindow, IDataHandler
     {
         private bool _fullScreen = false;
+        ImageConverter imgCon = new ImageConverter();
         private bool _init = false;
         private Map mMap;
         private bool mDown = false;
@@ -138,18 +139,29 @@ namespace remote_inspection_unit_control
 
         public void dataHandler(byte[] data)
         {
-            switch(data[0])
+            byte[] tempData = new byte[data.Length - 1];
+            Buffer.BlockCopy(data, 1, tempData, 0, tempData.Length);
+            char[] tempChar = Encoding.UTF8.GetString(data).ToCharArray();
+            switch(tempChar[0])
             {
-                case 1:
+                case '1':
                     //TODO map command
                     break;
-                case 2:
-                    //TODO camera stuff
+                case '2':
+                    Bitmap frame = (Bitmap)imgCon.ConvertFrom(tempData);
+                    refreshCamera(frame);
                     break;
                 default:
-                    lstLogList.Items.Add(data);
+                    lstLogList.Items.Add(Encoding.UTF8.GetString(tempData));
                     break;
             }
+        }
+
+        public void refreshCamera(Bitmap frame)
+        {
+            //refresh image
+            imgPlayer.Source = bitmapToImageSource(frame);
+            imgPlayer.InvalidateVisual();
         }
 
         private void btnMediaFullScreen_Click(object sender, RoutedEventArgs e)

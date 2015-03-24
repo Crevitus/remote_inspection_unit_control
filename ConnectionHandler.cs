@@ -23,9 +23,10 @@ namespace remote_inspection_unit_control
         private static bool _connected = false;
         private static bool _receive = false;
         private static readonly string IP = "192.168.42.1";
-        private static readonly int PORT = 6758;
+        private static readonly int PORT = 6700;
         private static readonly string KEY = "raspberry";
         private static readonly int RETRYS = 10;
+        private static IDataHandler _observerRef;
 
         public static bool Connected
         {
@@ -135,35 +136,52 @@ namespace remote_inspection_unit_control
 
         public static async void receive(IDataHandler reference)
         {
+            _observerRef = reference;
             while (_receive)
             {
                 try
                 {
                     if (_connected)
                     {
-                        using (MemoryStream stream = new MemoryStream())
+                        Byte[] lenBytes = new Byte[16];
+                        int read = await _dataStream.ReadAsync(lenBytes, 0, 16);
+                        int length = int.Parse(System.Text.Encoding.ASCII.GetString(lenBytes, 0, 16));
+                        Byte[] dataBytes = new Byte[length];
+                        int totalRead = 0;
+                        while (totalRead < length)
                         {
-                            byte[] buffer = new byte[2048]; // read in chunks of 2KB
-                            int bytesRead;
-                            if ((bytesRead = await _dataStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                            {
-                                stream.Write(buffer, 0, bytesRead);
-                                byte[] result = stream.ToArray();
-                                reference.dataHandler(result);
-                            }
-                        } // end using
+                            int bytesRead = await _dataStream.ReadAsync(dataBytes, totalRead, length - totalRead);
+                            totalRead += bytesRead;
+                            
+                        }
+                        reference.dataHandler(dataBytes);
                     } //end connection check
                 } //end try
+
+                catch(FormatException)
+                {
+                    error();
+                    break;
+                }
                 catch (ObjectDisposedException)
                 {
                     break;
                 }
                 catch (IOException)
                 {
+                    error();
                     break;
                 }
             }
 
+        }
+
+        private static void error()
+        {
+           if (MessageBox.Show("No longer receiving data from device, would you like to try to re-establish connection?", "Transmission Error", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
+           {
+               receive(_observerRef);
+           }
         }
     }
 }

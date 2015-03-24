@@ -52,8 +52,7 @@
             <Button x:Name="btnMapFullScreen" Style="{StaticResource basicButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
         </Grid>
         <Grid x:Name="gdMediaWrapper" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">
-            <MediaElement x:Name="mdePlayer" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"/>
-            <Canvas x:Name="cnvsDeleteMe" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Background="#FF313C44" UseLayoutRounding="False"/>
+            <Image x:Name="imgPlayer" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"/>
             <Button x:Name="btnMediaFullScreen" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Full Screen" Width="75" Click="btnMediaFullScreen_Click" Margin="0,0,2,1"/>
         </Grid>
         <!-- row 2 titles -->
