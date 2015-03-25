@@ -49,15 +49,38 @@
         <!-- row 1 items -->
         <Grid x:Name="gdMapWrapper" Grid.Row="1" Background="#FF2F5A7F" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
             <Image x:Name="map" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseMove="map_PreviewMouseMove" PreviewMouseUp="map_PreviewMouseUp" MouseLeave="map_MouseLeave"/>
-            <Button x:Name="btnMapFullScreen" Style="{StaticResource basicButton}" Content="Full Screen" Width="75" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1"/>
+            <Button x:Name="btnMapFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" Width="20" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1">
+                <StackPanel RenderTransformOrigin="0.5,0.5">
+                    <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
+                </StackPanel>
+            </Button>
         </Grid>
         <Grid x:Name="gdMediaWrapper" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">
             <Image x:Name="imgPlayer" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"/>
-            <Button x:Name="btnMediaFullScreen" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Full Screen" Width="75" Click="btnMediaFullScreen_Click" Margin="0,0,2,1"/>
+            <Button x:Name="btnMediaFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Width="20" Click="btnMediaFullScreen_Click" Margin="0,0,2,1">
+                <StackPanel RenderTransformOrigin="0.5,0.5">
+                    <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
+                </StackPanel>
+            </Button>
         </Grid>
         <!-- row 2 titles -->
         <Label Content="System Log" Style="{StaticResource basicLabel}" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" />
-        <Button Content="Capture" Style="{StaticResource basicButton}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="22" Margin="10,7,0,0"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2" Margin="0,0,8,0">
+            <Button x:Name="btnSave" ToolTip="Save Log" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" >
+                <Image Source="icon/download.png" Style="{StaticResource controlImage}"/>
+            </Button>
+            <Button x:Name="btnRefresh" ToolTip="Refresh Log" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Width="30">
+                <Image Source="icon/refresh.png" Style="{StaticResource controlImage}" Margin="8,0,0,0"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" Margin="8,0,0,0">
+            <Button ToolTip="Capture" x:Name="btnCapture" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Margin="0,0,8,0">
+                <Image Source="icon/capture.png" Style="{StaticResource controlImage}" />
+            </Button>
+            <Button ToolTip="Record" x:Name="btnRecord" Style="{StaticResource controlButton}" Background="#00531717" Width="20" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Image Source="icon/record.png" Style="{StaticResource controlImage}" />
+            </Button>
+        </StackPanel>
 
         <!-- row 2 items -->
         <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,15"/>
@@ -125,9 +148,10 @@
             <Button Content="East" x:Name="btnEast" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnEast_Click"/>
             <Button Content="South" x:Name="btnSouth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnSouth_Click"/>
             <Button Content="West" x:Name="btnWest" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnWest_Click" RenderTransformOrigin="-0.587,5.291"/>
-            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,20.4,0" VerticalAlignment="Top" Width="75" Height="22"/>
+            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnManual_Click"/>
             <Button Content="Zoom In" x:Name="btnZoomIn" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomIn_Click"/>
             <Button Content="Zoom Out" x:Name="btnZoomOut" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomOut_Click"/>
+            <TextBox x:Name="deansbox" HorizontalAlignment="Right" Width="200" Height="20" Margin="0,190,43.4,9.6" PreviewKeyDown="deansbox_PreviewKeyDown"/>       
         </Grid>
 
     </Grid>

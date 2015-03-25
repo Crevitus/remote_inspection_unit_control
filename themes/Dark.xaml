@@ -6,21 +6,21 @@
     <Style  x:Key="basicLabel"
            TargetType="{x:Type Label}">
         <Setter Property="Foreground"
-                Value="#FFE88015" />
+                Value="#CCCCCC" />
         <Setter Property="FontFamily"
                 Value="Microsoft JhengHei UI Light" />
         <Setter Property="FontSize"
-                Value="24" />
+                Value="16" />
     </Style>
 
     <Style x:Key="basicButton"
            TargetType="{x:Type Button}" >
         <Setter Property="Background"
-                Value="#FFE88015" />
+                Value="#191919" />
         <Setter Property="Foreground"
-                Value="White" />
+                Value="#CCCCCC" />
         <Setter Property="FontSize"
-                Value="16" />
+                Value="15" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="BorderThickness"
@@ -48,7 +48,7 @@
                         <Trigger Property="IsPressed"
                                  Value="True">
                             <Setter Property="Background"
-                                    Value="LightGray"
+                                    Value="#676767"
                                     />
                         </Trigger>
                         <Trigger Property="IsEnabled"
@@ -61,7 +61,7 @@
                             <Setter Property="Foreground"
                                     Value="Black" />
                             <Setter Property="Background"
-                                    Value="LightGray" />
+                                    Value="#676767" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -99,7 +99,7 @@
                      Value="True">
                 <Setter Property="BitmapEffect">
                     <Setter.Value>
-                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.5" Opacity="1" />
+                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.3" Opacity="0.5" />
                     </Setter.Value>
                 </Setter>
 

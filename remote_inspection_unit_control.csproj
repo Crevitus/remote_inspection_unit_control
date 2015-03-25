@@ -208,6 +208,16 @@
   <ItemGroup>
     <Resource Include="daticon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon\capture.png" />
+    <Resource Include="icon\download.png" />
+    <Resource Include="icon\expand.png" />
+    <Resource Include="icon\record.png" />
+    <Resource Include="icon\refresh.png" />
+    <Resource Include="icon\resize.png" />
+    <Resource Include="icon\zoomin.png" />
+    <Resource Include="icon\zoomout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,7 +23,7 @@ namespace remote_inspection_unit_control
         private static bool _connected = false;
         private static bool _receive = false;
         private static readonly string IP = "192.168.42.1";
-        private static readonly int PORT = 6700;
+        private static readonly int PORT = 6702;
         private static readonly string KEY = "raspberry";
         private static readonly int RETRYS = 10;
         private static IDataHandler _observerRef;
@@ -165,6 +165,7 @@ namespace remote_inspection_unit_control
                 }
                 catch (ObjectDisposedException)
                 {
+                    error();
                     break;
                 }
                 catch (IOException)
@@ -173,7 +174,6 @@ namespace remote_inspection_unit_control
                     break;
                 }
             }
-
         }
 
         private static void error()

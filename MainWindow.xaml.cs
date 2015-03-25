@@ -95,21 +95,30 @@ namespace remote_inspection_unit_control
 
         private async void cbxDeviceList_DropDownClosed(object sender, EventArgs e)
         {
-            if (cbxDeviceList.SelectedItem != null)
+            try
             {
-                string device = cbxDeviceList.SelectedItem.ToString();
-                if ((await ConnectionHandler.selectDevice(device)))
+                if (cbxDeviceList.SelectedItem != null)
                 {
-                    ConnectionHandler.Receive = true;
-                    ConnectionHandler.receive(this);
-                    lblConStatus.Content = "Connected";
-                    lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    btnDisconnect.IsEnabled = true;
+                    string device = cbxDeviceList.SelectedItem.ToString();
+                    if ((await ConnectionHandler.selectDevice(device)))
+                    {
+                        ConnectionHandler.Receive = true;
+                        ConnectionHandler.receive(this);
+                        lblConStatus.Content = "Connected";
+                        lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
+                        btnDisconnect.IsEnabled = true;
+                    }
+                    else
+                    {
+                        cbxDeviceList.Text = "-- Select Device --";
+                    }
                 }
-                else
-                {
-                    cbxDeviceList.Text = "-- Select Device --";
-                }
+            }
+            catch (NullReferenceException)
+            {
+                cbxDeviceList.Items.Clear();
+                MessageBox.Show("Please make sure the device is switched on and in range.",
+                "Device not found", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -453,6 +462,19 @@ namespace remote_inspection_unit_control
         {
             mMap.Size += 1;
             refresh();
+        }
+
+        private void btnManual_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void deansbox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                send(deansbox.Text);
+                deansbox.Clear();
+            }
         }
 
     }
