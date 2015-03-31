@@ -12,6 +12,7 @@
 	    ResizeMode="CanResizeWithGrip"
         GlowBrush="{DynamicResource AccentColorBrush}"
         Background="#FF242628"
+        PreviewKeyDown="window_PreviewKeyDown" PreviewKeyUp="window_PreviewKeyUp"
         >
     <!-- window commands -->
     <Controls:MetroWindow.RightWindowCommands>
@@ -25,7 +26,7 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
-    <Grid x:Name="layoutRoot"  Focusable="True" PreviewKeyDown="layoutRoot_PreviewKeyDown" PreviewKeyUp="layoutRoot_PreviewKeyUp">
+    <Grid x:Name="layoutRoot"  Focusable="True">
         <Grid.RowDefinitions>
             <!-- row 1 titles -->
             <RowDefinition Height="8*"/>
@@ -49,18 +50,22 @@
         <!-- row 1 items -->
         <Grid x:Name="gdMapWrapper" Grid.Row="1" Background="#FF2F5A7F" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
             <Image x:Name="map" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseMove="map_PreviewMouseMove" PreviewMouseUp="map_PreviewMouseUp" MouseLeave="map_MouseLeave"/>
-            <Button x:Name="btnMapFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" Width="20" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Margin="0,0,2,1">
-                <StackPanel RenderTransformOrigin="0.5,0.5">
+            <Button x:Name="btnMapFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" Width="20" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False">
                     <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
-                </StackPanel>
             </Button>
+            <StackPanel Height="50" Width="25" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <Button ToolTip="Zoom In" x:Name="btnZoomIn" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Click="btnZoomIn_Click">
+                    <Image Source="icon/zoomin.png" Style="{StaticResource controlImage}"/>
+                </Button>
+                <Button ToolTip="Zoom Out" x:Name="btnZoomOut" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="22" Click="btnZoomOut_Click">
+                    <Image Source="icon/zoomout.png" Style="{StaticResource controlImage}"/>
+                </Button>
+            </StackPanel>
         </Grid>
         <Grid x:Name="gdMediaWrapper" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0">
             <Image x:Name="imgPlayer" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"/>
-            <Button x:Name="btnMediaFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Width="20" Click="btnMediaFullScreen_Click" Margin="0,0,2,1">
-                <StackPanel RenderTransformOrigin="0.5,0.5">
-                    <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
-                </StackPanel>
+            <Button x:Name="btnMediaFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Width="20" Click="btnMediaFullScreen_Click">
+                <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
             </Button>
         </Grid>
         <!-- row 2 titles -->
@@ -74,7 +79,7 @@
             </Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" Margin="8,0,0,0">
-            <Button ToolTip="Capture" x:Name="btnCapture" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Margin="0,0,8,0">
+            <Button ToolTip="Capture" x:Name="btnCapture" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Margin="0,0,8,0" Click="btnCapture_Click">
                 <Image Source="icon/capture.png" Style="{StaticResource controlImage}" />
             </Button>
             <Button ToolTip="Record" x:Name="btnRecord" Style="{StaticResource controlButton}" Background="#00531717" Width="20" VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -86,73 +91,54 @@
         <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,15"/>
         <!-- controls -->
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="3">
+                <Grid Height="210" Width="220" HorizontalAlignment="Center"  >
+                    <Button x:Name="btnUp" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnUp_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnUp_PreviewMouseLeftButtonUp">
+                        <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="-90"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Button x:Name="btnDown" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnDown_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnDown_PreviewMouseLeftButtonUp" >
+                        <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="90"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Button x:Name="btnLeft" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnLeft_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnLeft_PreviewMouseLeftButtonUp" >
+                        <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="180"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Button x:Name="btnRight" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnRight_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnRight_PreviewMouseLeftButtonUp">
+                        <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="-360"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                </Grid>
+                <!-- other buttons -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Button Content="North" x:Name="btnNorth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Height="22" Click="btnNorth_Click"/>
+                <Button Content="East" x:Name="btnEast" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22" Click="btnEast_Click"/>
+                <Button Content="South" x:Name="btnSouth" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22" Click="btnSouth_Click"/>
+                <Button Content="West" x:Name="btnWest" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22" Click="btnWest_Click" RenderTransformOrigin="-0.587,5.291"/>
+                <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22" Click="btnManual_Click"/>
+            </StackPanel>
 
-            <Button x:Name="btnUp" HorizontalAlignment="Left" Margin="108,10,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnUp_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnUp_PreviewMouseLeftButtonUp">
-                <StackPanel>
-                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5">
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="-90"/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
-                </StackPanel>
-            </Button>
-            <Button x:Name="btnDown" HorizontalAlignment="Left" Margin="108,114,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnDown_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnDown_PreviewMouseLeftButtonUp" >
-                <StackPanel>
-                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="90"/>
-                                <TranslateTransform Y="5"/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
-                </StackPanel>
-            </Button>
-            <Button x:Name="btnLeft" HorizontalAlignment="Left" Margin="50,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnLeft_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnLeft_PreviewMouseLeftButtonUp" >
-                <StackPanel>
-                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="180"/>
-                                <TranslateTransform Y="5"/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
-                </StackPanel>
-            </Button>
-            <Button x:Name="btnRight" HorizontalAlignment="Left" Margin="167,59,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource controlButton}" Background="#00531717" PreviewMouseLeftButtonDown="btnRight_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="btnRight_PreviewMouseLeftButtonUp">
-                <StackPanel RenderTransformOrigin="0.5,0.5">
-                    <Image Source="icon/uparrow.png" Style="{DynamicResource controlImage}" RenderTransformOrigin="0.5,0.5" Margin="0" >
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleY="0.99999999999999989" ScaleX="0.99999999999999989"/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="-360"/>
-                                <TranslateTransform Y="5"/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
-                </StackPanel>
-            </Button>
-            <!-- other buttons -->
-            <Button Content="North" x:Name="btnNorth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,42,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnNorth_Click"/>
-            <Button Content="East" x:Name="btnEast" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnEast_Click"/>
-            <Button Content="South" x:Name="btnSouth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnSouth_Click"/>
-            <Button Content="West" x:Name="btnWest" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,111.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnWest_Click" RenderTransformOrigin="-0.587,5.291"/>
-            <Button Content="Manual" x:Name="btnManual" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,75,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnManual_Click"/>
-            <Button Content="Zoom In" x:Name="btnZoomIn" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,112,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomIn_Click"/>
-            <Button Content="Zoom Out" x:Name="btnZoomOut" Style="{StaticResource basicButton}" HorizontalAlignment="Right" Margin="0,149,20.4,0" VerticalAlignment="Top" Width="75" Height="22" Click="btnZoomOut_Click"/>
-            <TextBox x:Name="deansbox" HorizontalAlignment="Right" Width="200" Height="20" Margin="0,190,43.4,9.6" PreviewKeyDown="deansbox_PreviewKeyDown"/>       
+            <TextBox x:Name="deansbox" HorizontalAlignment="Right" Width="200" Height="20" Margin="0,200,246.4,-0.4" PreviewKeyDown="deansbox_PreviewKeyDown"/>
+            </Grid>
         </Grid>
-
-    </Grid>
 </Controls:MetroWindow>

@@ -38,8 +38,24 @@ namespace remote_inspection_unit_control
         public MainWindow()
         {
             InitializeComponent();
-            layoutRoot.Focus();
             getDevices();
+            ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
+        }
+
+        void ConnectionHandler_ConnectionChanged(object sender, EventArgs e)
+        {
+            if(ConnectionHandler.Connected)
+            {
+                lblConStatus.Content = "Connected";
+                lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
+                btnDisconnect.IsEnabled = true;
+            }
+            else
+            {
+                lblConStatus.Content = "Disconnected";
+                lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
+                btnDisconnect.IsEnabled = false;
+            }
         }
 
         //get available remote inspection devices
@@ -100,6 +116,7 @@ namespace remote_inspection_unit_control
                 if (cbxDeviceList.SelectedItem != null)
                 {
                     string device = cbxDeviceList.SelectedItem.ToString();
+                    cbxDeviceList.Text = "-- Connecting... --";
                     if ((await ConnectionHandler.selectDevice(device)))
                     {
                         ConnectionHandler.Receive = true;
@@ -129,6 +146,7 @@ namespace remote_inspection_unit_control
                 lblConStatus.Content = "Disconnected";
                 lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
                 btnDisconnect.IsEnabled = false;
+                MessageBox.Show("Failed to send message to device.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -170,6 +188,7 @@ namespace remote_inspection_unit_control
         {
             //refresh image
             imgPlayer.Source = bitmapToImageSource(frame);
+
             imgPlayer.InvalidateVisual();
         }
 
@@ -402,7 +421,7 @@ namespace remote_inspection_unit_control
             send(STOP);
         }
 
-        private void layoutRoot_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!mBlocking)
             {
@@ -430,7 +449,7 @@ namespace remote_inspection_unit_control
             }
         }
 
-        private void layoutRoot_PreviewKeyUp(object sender, KeyEventArgs e)
+        private void window_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -475,6 +494,14 @@ namespace remote_inspection_unit_control
                 send(deansbox.Text);
                 deansbox.Clear();
             }
+        }
+
+        private void btnCapture_Click(object sender, RoutedEventArgs e)
+        {
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create((BitmapSource)imgPlayer.Source));
+            using (FileStream stream = new FileStream(DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".jpg", FileMode.Create))
+                encoder.Save(stream);
         }
 
     }

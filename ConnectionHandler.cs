@@ -23,10 +23,11 @@ namespace remote_inspection_unit_control
         private static bool _connected = false;
         private static bool _receive = false;
         private static readonly string IP = "192.168.42.1";
-        private static readonly int PORT = 6702;
+        private static readonly int PORT = 6706;
         private static readonly string KEY = "raspberry";
         private static readonly int RETRYS = 10;
-        private static IDataHandler _observerRef;
+
+        public static event EventHandler ConnectionChanged;
 
         public static bool Connected
         {
@@ -44,6 +45,12 @@ namespace remote_inspection_unit_control
             _tcpClient.Close();
             _receive = false;
             _connected = false;
+        }
+
+        private static void connectionChangedEventRaised()
+        {
+            if (ConnectionChanged != null)
+                ConnectionChanged(null, null);
         }
 
         static string GetStringForSSID(Wlan.Dot11Ssid ssid)
@@ -65,7 +72,6 @@ namespace remote_inspection_unit_control
                     {
                         items.Add(GetStringForSSID(network.dot11Ssid));
                         _devicesInfo.Add(GetStringForSSID(network.dot11Ssid), network);
-
                     }
                 }
             }
@@ -119,24 +125,29 @@ namespace remote_inspection_unit_control
 
         public static bool send(string content)
         {
-            if (_tcpClient.Connected && _dataStream != null)
+            try
             {
-                // write the data in the stream
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
-                _dataStream.Write(buffer, 0, buffer.Length);
-                _dataStream.Flush();
-                return true;
+                if (_tcpClient.Connected && _dataStream != null)
+                {
+                    // write the data in the stream
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(content);
+                    _dataStream.Write(buffer, 0, buffer.Length);
+                    _dataStream.Flush();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch(IOException)
             {
-                MessageBox.Show("Failed to send message to device.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
 
         public static async void receive(IDataHandler reference)
         {
-            _observerRef = reference;
             while (_receive)
             {
                 try
@@ -178,10 +189,12 @@ namespace remote_inspection_unit_control
 
         private static void error()
         {
-           if (MessageBox.Show("No longer receiving data from device, would you like to try to re-establish connection?", "Transmission Error", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
-           {
-               receive(_observerRef);
-           }
+            if (_receive)
+            {
+                MessageBox.Show("No longer receiving data from device, please make sure that the device functional.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                connectionChangedEventRaised();
+            }
         }
+
     }
 }

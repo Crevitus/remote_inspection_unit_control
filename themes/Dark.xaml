@@ -99,7 +99,7 @@
                      Value="True">
                 <Setter Property="BitmapEffect">
                     <Setter.Value>
-                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.3" Opacity="0.5" />
+                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.3" Opacity="1.5" />
                     </Setter.Value>
                 </Setter>
 
