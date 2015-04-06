@@ -23,7 +23,7 @@ namespace remote_inspection_unit_control
         private static bool _connected = false;
         private static bool _receive = false;
         private static readonly string IP = "192.168.42.1";
-        private static readonly int PORT = 6706;
+        private static readonly int PORT = 6708;
         private static readonly string KEY = "raspberry";
         private static readonly int RETRYS = 10;
 
@@ -34,17 +34,13 @@ namespace remote_inspection_unit_control
             get { return _connected; }
         }
 
-        public static bool Receive
-        {
-            set { _receive = value; }
-        }
-
         public static void disconnect()
         {
             _dataStream.Dispose();
             _tcpClient.Close();
             _receive = false;
             _connected = false;
+            connectionChangedEventRaised();
         }
 
         private static void connectionChangedEventRaised()
@@ -115,9 +111,14 @@ namespace remote_inspection_unit_control
                 }
                 else
                 {
-                    MessageBox.Show("Could not connect to device.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     _connected = false;
                 }
+                connectionChangedEventRaised();
+            }
+
+            if(_connected)
+            {
+                _receive = true;
             }
 
             return _connected;
@@ -137,6 +138,8 @@ namespace remote_inspection_unit_control
                 }
                 else
                 {
+                    _connected = false;
+                    connectionChangedEventRaised();
                     return false;
                 }
             }

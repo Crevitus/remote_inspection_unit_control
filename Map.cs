@@ -13,8 +13,8 @@ namespace remote_inspection_unit_control
         private Point mStart = new Point(0, 0);//top left of map
         private Bitmap mImage;
         private double mZoom = 10;//zoom
-        Pen mPen = new Pen(Color.Black, 5);//line color and size
-        Color mBackgroundColor = Color.FromArgb(47, 90, 127);
+        private Pen mPen = new Pen(Color.Black, 5);//line color and size
+        private Color mBackgroundColor = Color.FromArgb(47, 90, 127);
 
         public Map(Bitmap b)
         {
@@ -23,6 +23,14 @@ namespace remote_inspection_unit_control
             mStart.Y = mStart.Y - (int)(mZoom / 2);
         }
 
+        public int PenSize
+        {
+            set
+            {
+                mPen = new Pen(Color.Black, value);
+            }
+        }
+        
         public Point StartLoc
         {
             get

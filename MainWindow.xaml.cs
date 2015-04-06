@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using System.Drawing;
 using System.IO;
+using System.Timers;
 
 namespace remote_inspection_unit_control
 {
@@ -34,27 +35,42 @@ namespace remote_inspection_unit_control
         private Bitmap mImage;
         private readonly string FORWARD = "150", LEFT = "250", RIGHT = "350", BACKWARD = "450", STOP = "0";
         private bool mBlocking = false;
+        private bool _manual = true;
 
         public MainWindow()
         {
             InitializeComponent();
             getDevices();
             ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
+            string path = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (!Directory.Exists(path + "\\Remote Inspection Unit"))
+            {
+                System.IO.Directory.CreateDirectory(path + "\\Remote Inspection Unit");
+                System.IO.Directory.CreateDirectory(path + "\\Remote Inspection Unit\\Logs");
+                System.IO.Directory.CreateDirectory(path + "\\Remote Inspection Unit\\Screenshots");
+            }
         }
 
         void ConnectionHandler_ConnectionChanged(object sender, EventArgs e)
         {
             if(ConnectionHandler.Connected)
             {
+                addLogItem("System", "Connected to device");
                 lblConStatus.Content = "Connected";
                 lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
                 btnDisconnect.IsEnabled = true;
+                btnSwitch.IsEnabled = true;
             }
             else
             {
+                addLogItem("System", "Disconnected from device");
+                btnSwitch.Content = "AI Control";
+                _manual = true;
+                cbxDeviceList.Text = "-- Select Device --";
                 lblConStatus.Content = "Disconnected";
                 lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
                 btnDisconnect.IsEnabled = false;
+                btnSwitch.IsEnabled = false;
             }
         }
 
@@ -116,17 +132,20 @@ namespace remote_inspection_unit_control
                 if (cbxDeviceList.SelectedItem != null)
                 {
                     string device = cbxDeviceList.SelectedItem.ToString();
-                    cbxDeviceList.Text = "-- Connecting... --";
+                    cbxDeviceList.Text = "-- Connecting --";
+                    if (ConnectionHandler.Connected)
+                    {
+                        ConnectionHandler.disconnect();
+                    }
                     if ((await ConnectionHandler.selectDevice(device)))
                     {
-                        ConnectionHandler.Receive = true;
+                        cbxDeviceList.Text = device;
+                        initialiseMap();
                         ConnectionHandler.receive(this);
-                        lblConStatus.Content = "Connected";
-                        lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
-                        btnDisconnect.IsEnabled = true;
                     }
                     else
                     {
+                        MessageBox.Show("Could not connect to device.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         cbxDeviceList.Text = "-- Select Device --";
                     }
                 }
@@ -141,22 +160,18 @@ namespace remote_inspection_unit_control
 
         private void send(string data)
         {
-            if (!ConnectionHandler.send(data))
+            if (ConnectionHandler.Connected)
             {
-                lblConStatus.Content = "Disconnected";
-                lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
-                btnDisconnect.IsEnabled = false;
-                MessageBox.Show("Failed to send message to device.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (!ConnectionHandler.send(data))
+                {
+                    MessageBox.Show("Failed to send message to device.", "Transmission Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
         private void btnDisconnect_Click(object sender, RoutedEventArgs e)
         {
             ConnectionHandler.disconnect();
-            cbxDeviceList.Text = "-- Select Device --";
-            lblConStatus.Content = "Disconnected";
-            btnDisconnect.IsEnabled = false;
-            lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -172,14 +187,32 @@ namespace remote_inspection_unit_control
             switch(tempChar[0])
             {
                 case '1':
-                    //TODO map command
+                    switch(Encoding.UTF8.GetString(data))
+                    {
+                        case "forward":
+                            goForward();
+                            break;
+                        case "back":
+                            goBack();
+                            break;
+                        case "left":
+                            goLeft();
+                            break;
+                        case "right":
+                            goRight();
+                            break;
+                    }
                     break;
                 case '2':
                     Bitmap frame = (Bitmap)imgCon.ConvertFrom(tempData);
                     refreshCamera(frame);
                     break;
                 default:
-                    lstLogList.Items.Add(Encoding.UTF8.GetString(tempData));
+                    if(lstLogList.Items.Count >= 200)
+                    {
+                        lstLogList.Items.Clear();
+                    }
+                    addLogItem("Remote Device", Encoding.UTF8.GetString(tempData));
                     break;
             }
         }
@@ -209,6 +242,12 @@ namespace remote_inspection_unit_control
                 this.Content = control;
                 control.Margin = new Thickness(0);
                 this.WindowState = WindowState.Maximized;
+                if (_init)
+                {
+                    mMap.Size += 6;
+                    mMap.PenSize = 2;
+                    refresh();
+                }
             }
             else
             {
@@ -224,6 +263,12 @@ namespace remote_inspection_unit_control
                 }
 
                 this.WindowState = WindowState.Normal;
+                if (_init)
+                {
+                    mMap.Size -= 6;
+                    mMap.PenSize = 5;
+                    refresh();
+                }
 
             }
             _fullScreen = !_fullScreen;
@@ -241,9 +286,8 @@ namespace remote_inspection_unit_control
             }
         }
 
-        private void btnNorth_Click(object sender, RoutedEventArgs e)
+        private void goForward()
         {
-            initialiseMap();
             bool[] b = new bool[] { false, true, true, true };
             if (mPrev >= 0) b[mPrev] = false;
             mMap.add(mMapPos, b);
@@ -251,9 +295,8 @@ namespace remote_inspection_unit_control
             refresh();
             mPrev = 1;
         }
-        private void btnEast_Click(object sender, RoutedEventArgs e)
+        private void goRight()
         {
-            initialiseMap();
             bool[] b = new bool[] { true, true, true, false };
             if (mPrev >= 0) b[mPrev] = false;
             mMap.add(mMapPos, b);
@@ -261,9 +304,8 @@ namespace remote_inspection_unit_control
             refresh();
             mPrev = 2;
         }
-        private void btnSouth_Click(object sender, RoutedEventArgs e)
+        private void goBack()
         {
-            initialiseMap();
             bool[] b = new bool[] { true, false, true, true };
             if (mPrev >= 0) b[mPrev] = false;
             mMap.add(mMapPos, b);
@@ -271,9 +313,8 @@ namespace remote_inspection_unit_control
             refresh();
             mPrev = 0;
         }
-        private void btnWest_Click(object sender, RoutedEventArgs e)
+        private void goLeft()
         {
-            initialiseMap();
             bool[] b = new bool[] { true, true, false, true };
             if (mPrev >= 0) b[mPrev] = false;
             mMap.add(mMapPos, b);
@@ -473,35 +514,78 @@ namespace remote_inspection_unit_control
 
         private void btnZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            mMap.Size -= 1;
-            refresh();
+            if (_init)
+            {
+                mMap.Size -= 1;
+                refresh();
+            }
         }
 
         private void btnZoomOut_Click(object sender, RoutedEventArgs e)
         {
-            mMap.Size += 1;
-            refresh();
-        }
-
-        private void btnManual_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void deansbox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
+            if (_init)
             {
-                send(deansbox.Text);
-                deansbox.Clear();
+                mMap.Size += 1;
+                refresh();
             }
         }
 
-        private void btnCapture_Click(object sender, RoutedEventArgs e)
+        private void btnSwitch_Click(object sender, RoutedEventArgs e)
         {
-            var encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create((BitmapSource)imgPlayer.Source));
-            using (FileStream stream = new FileStream(DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".jpg", FileMode.Create))
-                encoder.Save(stream);
+            if (_manual)
+            {
+                send("51");
+                _manual = false;
+                addLogItem("System", "Automatic path finding enabled");
+                btnSwitch.Content = "Manual";
+            }
+            else
+            {
+                send("50");
+                _manual = true;
+                addLogItem("System", "Manual control enabled");
+                btnSwitch.Content = "AIControl";
+            }
+        }
+
+        private void addLogItem(string type, object item)
+        {
+            lstLogList.Items.Insert(0, ">> " + DateTime.Now.ToLongTimeString() + " [" + type + "] "+ item);
+        }
+
+        private async void btnCapture_Click(object sender, RoutedEventArgs e)
+        {
+            if (imgPlayer.Source != null)
+            {
+                cnvsFlash.Background = new SolidColorBrush(Colors.White);
+                await Task.Delay(100);
+                cnvsFlash.Background = null;
+                var encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)imgPlayer.Source));
+                string path = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                using (FileStream stream = new FileStream(path + "\\Remote Inspection Unit\\Screenshots\\" + DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".jpg", FileMode.Create))
+                {
+                    encoder.Save(stream);
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            lstLogList.Items.Clear();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            string path = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            using (StreamWriter SaveFile = new StreamWriter(path + "\\Remote Inspection Unit\\Logs\\Log " + DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".txt"))
+            {
+                foreach (var item in lstLogList.Items)
+                {
+                    SaveFile.WriteLine(item.ToString());
+                }
+            }
+            addLogItem("System", "Log saved");
         }
 
     }

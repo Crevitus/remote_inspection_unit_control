@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "remote_inspection_unit_control", "remote_inspection_unit_control.csproj", "{6908A4D3-500C-49BE-9F69-5E6EE758FD7F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Remote Inspection Unit Installer", "..\Remote Inspection Unit Installer\Remote Inspection Unit Installer.vdproj", "{6DE6684E-01DF-4C94-9493-4DC93371D903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,12 @@ Global
 		{6908A4D3-500C-49BE-9F69-5E6EE758FD7F}.Release|x64.Build.0 = Release|x64
 		{6908A4D3-500C-49BE-9F69-5E6EE758FD7F}.Release|x86.ActiveCfg = Release|x86
 		{6908A4D3-500C-49BE-9F69-5E6EE758FD7F}.Release|x86.Build.0 = Release|x86
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Debug|Any CPU.ActiveCfg = Debug
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Debug|x64.ActiveCfg = Debug
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Debug|x86.ActiveCfg = Debug
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Release|Any CPU.ActiveCfg = Release
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Release|x64.ActiveCfg = Release
+		{6DE6684E-01DF-4C94-9493-4DC93371D903}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -72,23 +72,6 @@
         <Setter Property="FontFamily" Value="Segoe UI Semilight"/>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="exitButton" BasedOn="{StaticResource basicButton}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver"
-						Value="True">
-                <Setter Property="Background"
-						Value="#FFD35454" />
-                <Setter Property="Foreground"
-						Value="#FFFFFF" />
-            </Trigger>
-            <Trigger Property="IsPressed"
-					Value="True">
-                <Setter Property="Background"
-                        Value="#FFB82727" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <Style x:Key="controlImage"
            TargetType="{x:Type Image}">
 
@@ -99,7 +82,7 @@
                      Value="True">
                 <Setter Property="BitmapEffect">
                     <Setter.Value>
-                        <DropShadowBitmapEffect Color="#FF292929" ShadowDepth="0" Softness="0.3" Opacity="1.5" />
+                        <DropShadowBitmapEffect Color="Black" Softness="1.0" Opacity="0.8" Direction="0" ShadowDepth="0"/>
                     </Setter.Value>
                 </Setter>
 
