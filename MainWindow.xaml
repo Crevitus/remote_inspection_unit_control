@@ -21,7 +21,7 @@
                 <Button Content="AI Control" x:Name="btnSwitch" Cursor="Hand" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnSwitch_Click"/>
                 <Button x:Name="btnDisconnect" Content="Disconnect"  HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="95" IsEnabled="False" Click="btnDisconnect_Click" Cursor="Hand" />
                 <Label x:Name="lblConStatus" Margin="10,0,10,0" Content="Disconnected" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontFamily="Segoe UI" FontSize="12" Foreground="Black"/>
-                <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- No Devices --" FontFamily="Segoe UI" FontSize="14" Width="195" Margin="0,0,0,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" DropDownClosed="cbxDeviceList_DropDownClosed" Background="{x:Null}" Foreground="#FFF1EEEE" />
+                <ComboBox x:Name="cbxDeviceList" IsEditable="True" Focusable="False" IsReadOnly="True" Text="-- No Devices --" FontFamily="Segoe UI" FontSize="14" Width="195" Margin="0,0,0,0.4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" DropDownClosed="cbxDeviceList_DropDownClosed" Background="{x:Null}" Foreground="Black" />
                 <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="75"  Margin="4,0,0,0"  Click="btnSearch_Click" Cursor="Hand"/>
             </StackPanel>
         </Controls:WindowCommands>
@@ -46,22 +46,15 @@
 
         <!-- row 1 titles -->
         <Label Content="Camera View" Style="{StaticResource basicLabel}" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Height="auto" Width="auto" />
-        <Label Content="Map View" Style="{StaticResource basicLabel}" HorizontalAlignment="Center"  Grid.Row="0" VerticalAlignment="Center" Height="auto" Width="auto" Grid.Column="1"/>
+        <Label Content="Sensor View" Style="{StaticResource basicLabel}" HorizontalAlignment="Center"  Grid.Row="0" VerticalAlignment="Center" Height="auto" Width="auto" Grid.Column="1"/>
 
         <!-- row 1 items -->
         <Grid x:Name="gdMapWrapper" Grid.Row="1" Background="#FF2F5A7F" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="4,0,8,0">
-            <Image x:Name="map" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseMove="map_PreviewMouseMove" PreviewMouseUp="map_PreviewMouseUp" MouseLeave="map_MouseLeave"/>
-            <Button x:Name="btnMapFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" Width="20" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False">
+            <Image x:Name="imgSensors" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto"/>
+            <Image x:Name="imgDrone" Source="icon/drone.png" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" Panel.ZIndex="1"/>
+            <Button x:Name="btnMapFullScreen" Style="{StaticResource controlButton}" Background="#00531717" ToolTip="Full Screen" Width="20" Click="btnMapFullScreen_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="False" Panel.ZIndex="2">
                     <Image Source="icon/resize.png" Style="{StaticResource controlImage}"></Image>
             </Button>
-            <StackPanel Height="50" Width="25" VerticalAlignment="Top" HorizontalAlignment="Left" >
-                <Button ToolTip="Zoom In" x:Name="btnZoomIn" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" Click="btnZoomIn_Click">
-                    <Image Source="icon/zoomin.png" Style="{StaticResource controlImage}"/>
-                </Button>
-                <Button ToolTip="Zoom Out" x:Name="btnZoomOut" Style="{StaticResource controlButton}" Background="#00531717" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="22" Click="btnZoomOut_Click">
-                    <Image Source="icon/zoomout.png" Style="{StaticResource controlImage}"/>
-                </Button>
-            </StackPanel>
         </Grid>
         <Grid x:Name="gdMediaWrapper"  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Margin="8,0,4,0" Opacity="0.5">
             <Canvas x:Name="cnvsFlash" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Panel.ZIndex="2" Opacity="0.5" ></Canvas>
@@ -87,7 +80,7 @@
         </StackPanel>
 
         <!-- row 2 items -->
-        <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,15"/>
+        <ListBox x:Name="lstLogList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto" Grid.Row="3" Background="#FF5C6D7E" Grid.Column="1" Grid.RowSpan="2" Margin="4,0,8,15" IsHitTestVisible="False"/>
         <!-- controls -->
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto"  Grid.Column="0" Grid.Row="3">
                 <Grid Height="210" Width="220" HorizontalAlignment="Center"  >
@@ -129,12 +122,6 @@
                     </Button>
                 </Grid>
                 <!-- other buttons -->
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-                <Button Content="North" x:Name="btnNorth" Style="{StaticResource basicButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Height="22"/>
-                <Button Content="East" x:Name="btnEast" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22"/>
-                <Button Content="South" x:Name="btnSouth" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22"/>
-                <Button Content="West" x:Name="btnWest" Style="{StaticResource basicButton}" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="75" Height="22" RenderTransformOrigin="-0.587,5.291"/>
-            </StackPanel>
         </Grid>
         </Grid>
 </Controls:MetroWindow>

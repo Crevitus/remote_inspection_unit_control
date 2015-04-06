@@ -26,16 +26,13 @@ namespace remote_inspection_unit_control
     {
         private bool _fullScreen = false;
         ImageConverter imgCon = new ImageConverter();
-        private bool _init = false;
-        private Map mMap;
-        private bool mDown = false;
-        private int mPosX = 0, mPosY = 0;
+        Map mMap;
+        Bitmap mImage;
         private System.Drawing.Point mMapPos = new System.Drawing.Point(0, 0);
-        private int mPrev = -1;
-        private Bitmap mImage;
         private readonly string FORWARD = "150", LEFT = "250", RIGHT = "350", BACKWARD = "450", STOP = "0";
         private bool mBlocking = false;
         private bool _manual = true;
+        private bool _init = false;
 
         public MainWindow()
         {
@@ -51,10 +48,22 @@ namespace remote_inspection_unit_control
             }
         }
 
+        private void initialiseMap()
+        {
+            if (!_init)
+            {
+                mImage = new Bitmap((int)gdMapWrapper.ActualWidth, (int)gdMapWrapper.ActualHeight);
+                mMap = new Map(mImage);
+                refresh();
+                _init = true;
+            }
+        }
+
         void ConnectionHandler_ConnectionChanged(object sender, EventArgs e)
         {
             if(ConnectionHandler.Connected)
             {
+                lstLogList.Items.Clear();
                 addLogItem("System", "Connected to device");
                 lblConStatus.Content = "Connected";
                 lblConStatus.Foreground = new SolidColorBrush(Colors.Green);
@@ -71,6 +80,8 @@ namespace remote_inspection_unit_control
                 lblConStatus.Foreground = new SolidColorBrush(Colors.DarkOrange);
                 btnDisconnect.IsEnabled = false;
                 btnSwitch.IsEnabled = false;
+                mMap.refresh();
+                refresh();
             }
         }
 
@@ -140,8 +151,8 @@ namespace remote_inspection_unit_control
                     if ((await ConnectionHandler.selectDevice(device)))
                     {
                         cbxDeviceList.Text = device;
-                        initialiseMap();
                         ConnectionHandler.receive(this);
+                        initialiseMap();
                     }
                     else
                     {
@@ -187,28 +198,41 @@ namespace remote_inspection_unit_control
             switch(tempChar[0])
             {
                 case '1':
-                    switch(Encoding.UTF8.GetString(data))
+                    switch(Encoding.UTF8.GetString(tempData))
                     {
-                        case "forward":
-                            goForward();
+                        case "FORWARD":
+                            mMap.Forward = true;
                             break;
-                        case "back":
-                            goBack();
+                        case "nFORWARD":
+                            mMap.Forward = false;
                             break;
-                        case "left":
-                            goLeft();
+                        case "REVERSE":
+                            mMap.Back = true;
                             break;
-                        case "right":
-                            goRight();
+                        case "nREVERSE":
+                            mMap.Back = false;
+                            break;
+                        case "LEFT":
+                            mMap.Left = true;
+                            break;
+                        case "nLEFT":
+                            mMap.Left = false;
+                            break;
+                        case "RIGHT":
+                            mMap.Right = true;
+                            break;
+                        case "nRIGHT":
+                            mMap.Right = false;
                             break;
                     }
+                    refresh();
                     break;
                 case '2':
                     Bitmap frame = (Bitmap)imgCon.ConvertFrom(tempData);
                     refreshCamera(frame);
                     break;
                 default:
-                    if(lstLogList.Items.Count >= 200)
+                    if(lstLogList.Items.Count >= 400)
                     {
                         lstLogList.Items.Clear();
                     }
@@ -216,7 +240,12 @@ namespace remote_inspection_unit_control
                     break;
             }
         }
-
+        public void refresh()
+        {
+            mMap.draw();
+            imgSensors.Source = bitmapToImageSource(mImage);
+            imgSensors.InvalidateVisual();
+        }
         public void refreshCamera(Bitmap frame)
         {
             //refresh image
@@ -242,12 +271,6 @@ namespace remote_inspection_unit_control
                 this.Content = control;
                 control.Margin = new Thickness(0);
                 this.WindowState = WindowState.Maximized;
-                if (_init)
-                {
-                    mMap.Size += 6;
-                    mMap.PenSize = 2;
-                    refresh();
-                }
             }
             else
             {
@@ -263,71 +286,9 @@ namespace remote_inspection_unit_control
                 }
 
                 this.WindowState = WindowState.Normal;
-                if (_init)
-                {
-                    mMap.Size -= 6;
-                    mMap.PenSize = 5;
-                    refresh();
-                }
 
             }
             _fullScreen = !_fullScreen;
-        }
-
-        //sets map dimensions after layout pass
-        private void initialiseMap()
-        {
-            if (!_init)
-            {
-                mImage = new Bitmap((int)gdMapWrapper.ActualWidth, (int)gdMapWrapper.ActualHeight);
-                mMap = new Map(mImage);
-                refresh();
-                _init = true;
-            }
-        }
-
-        private void goForward()
-        {
-            bool[] b = new bool[] { false, true, true, true };
-            if (mPrev >= 0) b[mPrev] = false;
-            mMap.add(mMapPos, b);
-            mMapPos.Y -= 1;
-            refresh();
-            mPrev = 1;
-        }
-        private void goRight()
-        {
-            bool[] b = new bool[] { true, true, true, false };
-            if (mPrev >= 0) b[mPrev] = false;
-            mMap.add(mMapPos, b);
-            mMapPos.X += 1;
-            refresh();
-            mPrev = 2;
-        }
-        private void goBack()
-        {
-            bool[] b = new bool[] { true, false, true, true };
-            if (mPrev >= 0) b[mPrev] = false;
-            mMap.add(mMapPos, b);
-            mMapPos.Y += 1;
-            refresh();
-            mPrev = 0;
-        }
-        private void goLeft()
-        {
-            bool[] b = new bool[] { true, true, false, true };
-            if (mPrev >= 0) b[mPrev] = false;
-            mMap.add(mMapPos, b);
-            mMapPos.X -= 1;
-            refresh();
-            mPrev = 3;
-        }
-
-          public void refresh()
-        {
-            mMap.draw();
-            map.Source = bitmapToImageSource(mImage);
-            map.InvalidateVisual();
         }
 
         BitmapImage bitmapToImageSource(Bitmap bitmap)
@@ -344,62 +305,6 @@ namespace remote_inspection_unit_control
 
                 return bitmapimage;
             }
-        }
-
-        
-        private void map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            mDown = true;
-            mPosX = (int)e.GetPosition(this).X;
-            mPosY = (int)e.GetPosition(this).Y;
-        }
-
-        private void map_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (mDown)
-            {
-                int tol = 30;
-                int xDif = (int)(mPosX - e.GetPosition(this).X);
-                int yDif = (int)(mPosY - e.GetPosition(this).Y);
-                if (xDif < tol && xDif > -tol &&
-                    yDif < tol && yDif > -tol) return;
-
-                if (xDif > yDif)
-                {
-                    if (xDif > 0) yDif = 0;
-                    else xDif = 0;
-                }
-                if (yDif > xDif)
-                {
-                    if (yDif > 0) xDif = 0;
-                    else yDif = 0;
-                }
-
-                if (xDif < 0) xDif = -1;
-                if (xDif > 0) xDif = 1;
-                if (yDif > 0) yDif = 1;
-                if (yDif < 0) yDif = -1;
-                mMap.StartLoc = new System.Drawing.Point(mMap.StartLoc.X + xDif, mMap.StartLoc.Y + yDif);
-                refresh();
-                mPosX = (int)e.GetPosition(this).X;
-                mPosY = (int)e.GetPosition(this).Y;
-            }
-        }
-
-        private void map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            mDown = false;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            mMap.StartLoc = new System.Drawing.Point(0, 0);
-            refresh();
-        }
-
-        private void map_MouseLeave(object sender, MouseEventArgs e)
-        {
-            mDown = false;
         }
 
         private void btnUp_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -512,24 +417,6 @@ namespace remote_inspection_unit_control
             mBlocking = false;
         }
 
-        private void btnZoomIn_Click(object sender, RoutedEventArgs e)
-        {
-            if (_init)
-            {
-                mMap.Size -= 1;
-                refresh();
-            }
-        }
-
-        private void btnZoomOut_Click(object sender, RoutedEventArgs e)
-        {
-            if (_init)
-            {
-                mMap.Size += 1;
-                refresh();
-            }
-        }
-
         private void btnSwitch_Click(object sender, RoutedEventArgs e)
         {
             if (_manual)
@@ -577,16 +464,18 @@ namespace remote_inspection_unit_control
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            string path = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            using (StreamWriter SaveFile = new StreamWriter(path + "\\Remote Inspection Unit\\Logs\\Log " + DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".txt"))
+            if (lstLogList.Items.Count != 0)
             {
-                foreach (var item in lstLogList.Items)
+                string path = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                using (StreamWriter SaveFile = new StreamWriter(path + "\\Remote Inspection Unit\\Logs\\Log " + DateTime.Now.ToString("yyyy MM dd HH mm ss") + ".txt"))
                 {
-                    SaveFile.WriteLine(item.ToString());
+                    foreach (var item in lstLogList.Items)
+                    {
+                        SaveFile.WriteLine(item.ToString());
+                    }
                 }
+                addLogItem("System", "Log saved");
             }
-            addLogItem("System", "Log saved");
         }
-
     }
 }
